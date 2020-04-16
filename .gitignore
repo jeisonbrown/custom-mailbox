@@ -5,3 +5,6 @@ bootstrap/cache/*
 !bootstrap/cache/.gitkeep
 lib/fixed-width-light/
 public/bower_components/
+README.md
+public/dist/css/style.css
+public/dist/css/style.css.map

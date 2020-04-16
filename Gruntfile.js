@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 					style: 'expanded'
 				},
 				files: {                         
-					'public/dist/css/style.css': 'src/scss/style.scss',       // 'destination': 'source' 
+					'public/dist/css/style.css': 'src/scss/main.scss',       // 'destination': 'source' 
 				}
 			},
 			dark: {                            // Target 
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 		},
 	watch: {
 		src: {
-			files: ['src/scss/style.scss'],
+			files: ['src/scss/main.scss'],
 			tasks: ['sass:dist'],
 			options: {
 				spawn: false,
