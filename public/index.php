@@ -2,10 +2,11 @@
 
 define('DEBUG', true);
 
-require __DIR__.'/../bootstrap/autoload.php';
+require __DIR__.'/../core/autoload.php';
 
-require __DIR__.'/../bootstrap/views.php';
+require __DIR__.'/../core/Route.php';
 
-// $template = $twig->load('prueba.html');
-// var_dump($template) ;
-//echo $twig->render('index', ['name' => 'Fabien']);
+require __DIR__.'/../app/routes.php';
+
+use Core\Route;
+Route::dispatch();

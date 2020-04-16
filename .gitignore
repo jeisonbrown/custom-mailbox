@@ -1,8 +1,8 @@
 vendor/
 node_modules/
 .sass-cache/
-bootstrap/cache/*
-!bootstrap/cache/.gitkeep
+core/cache/*
+!core/cache/.gitkeep
 lib/fixed-width-light/
 public/bower_components/
 README.md
