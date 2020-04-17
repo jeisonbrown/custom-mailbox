@@ -56,7 +56,6 @@ class Route {
                 "code" => $e->getCode(),
                 "file" => $e->getFile(),
                 "line" => $e->getLine(),
-                "trace" => $e->getTrace(),
                 "previous" => $e->getPrevious(),
                 "traceAsString" => $e->getTraceAsString()
             ]);

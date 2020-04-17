@@ -1,9 +1,10 @@
 RewriteEngine On
 RewriteBase /
+
 RewriteCond %{REQUEST_URI} ^.*\.(jpg|css|js|gif|png|map)$ [NC]
-RewriteRule ^public/bower_components/(.*)$ /bower_components/$1 [R=301,NC,L]
-RewriteRule ^vendors/bower_components/(.*)$ /bower_components/$1 [R=301,NC,L]
-#RewriteRule ^public/bower_components/(.*)$ https://%{SERVER_NAME}/bower_components/$1 [R=301,NC,L]
-#RewriteRule ^vendors/bower_components/(.*)$ https://%{SERVER_NAME}/bower_components/$1 [R=301,NC,L]
+#RewriteRule ^public/bower_components/(.*)$ /bower_components/$1 [R=301,NC,L]
+#RewriteRule ^vendors/bower_components/(.*)$ /bower_components/$1 [R=301,NC,L]
+RewriteRule ^public/bower_components/(.*)$ https://%{SERVER_NAME}/bower_components/$1 [NC]
+RewriteRule ^vendors/bower_components/(.*)$ https://%{SERVER_NAME}/bower_components/$1 [NC]
 RewriteCond %{REQUEST_URI} !^.*\.(jpg|css|js|gif|png|map|woff2)$ [NC]
 RewriteRule ^(.+)$ index.php [QSA,L]
