@@ -51,7 +51,16 @@ class Route {
             }
         } catch(HttpRouteNotFoundException $e) {
             $theme = new View();
-            return $theme->render('errors.404');
+            return $theme->render('errors.404', [
+                "debug" => boolval(getenv('DEBUG')),
+                "message" => $e->getMessage(),
+                "code" => $e->getCode(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine(),
+                "trace" => $e->getTrace(),
+                "previous" => $e->getPrevious(),
+                "traceAsString" => $e->getTraceAsString()
+            ]);
         }
     }
 

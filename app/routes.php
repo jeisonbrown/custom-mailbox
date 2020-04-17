@@ -1,6 +1,6 @@
 <?php 
 
 use Core\Route;
-Route::get('/', 'HomeController');
+Route::get('/', 'InboxController');
 
-Route::get('/products', 'HomeController');
+// Route::get('/inbox', 'InboxController');

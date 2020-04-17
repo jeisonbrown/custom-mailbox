@@ -34,18 +34,9 @@
 								<div class="row">
 									<div class="col-sm-12 col-xs-12">
 										<div class="mb-30">
-											<span class="block error-head text-center txt-orange mb-10">404</span>
-											<span class="text-center nonecase-font mb-20 block error-comment">Page Not Found</span>
-											<p class="text-center">The URL may be misplaced or the pahe you are looking is no longer available.</p>
-											{% if debug %}
-												<p>Mensaje: {{ message }}</p>
-												<p>Codigo: {{ code }}</p>
-												<p>Archivo: {{ file }}</p>
-												<p>Linea: {{ line }}</p>
-												<p>Traza: {{ trace }}</p>
-												<p>Anterior: {{ previous }}</p>
-												<p>Traza String: {{ traceAsString }}</p>
-											{% endif %}
+											<span class="block error-head text-center txt-orange mb-10">{{ code }}</span>
+											<span class="text-center nonecase-font mb-20 block error-comment">{{ title }}</span>
+											<p class="text-center">{{ message }}</p>
 										</div>	
 									</div>	
 								</div>
