@@ -4,7 +4,51 @@
 {{ include('components/common/head.html') }}
 
 <body>
-  {{ include('components/preloader.html') }}
-  
+    {{ include('components/preloader.html') }}
+
+    <div class="wrapper {% if wrapperClass is defined %}{{ wrapperClass }}{% endif %}">
+
+        {% if withHeader  %}
+            <header class="sp-header">
+                <div class="sp-logo-wrap pull-left">
+                    <a href="/">
+                        <img class="brand-img mr-10" src="/img/logo.png" alt="brand" />
+                        <span class="brand-text">Mailbox</span>
+                    </a>
+                </div>
+                <div class="form-group mb-0 pull-right">
+                    {% block header %}{% endblock %}
+                </div>
+                <div class="clearfix"></div>
+            </header>
+        {% endif %}
+
+        {% if topMenu  %}
+            {{ include('components/topMenu.html') }}
+        {% endif %}
+
+        {% if leftSidebar %}
+            {{ include('components/leftSidebar.html') }}
+        {% endif %}
+
+        {% if rightSidebar %}
+            {{ include('components/rightSidebar.html') }}
+        {% endif %}
+
+        {% if rightSetting %}
+            {{ include('components/rightSetting.html') }}
+        {% endif %}
+
+        <div class="page-wrapper {% if pageWrapperClass is defined %}{{ pageWrapperClass }}{% endif %}"
+            style="min-height: 216px;">
+            <div class="container-fluid">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+    </div>
+
+    {{ include('components/common/scripts.html') }}
 </body>
+
 </html>

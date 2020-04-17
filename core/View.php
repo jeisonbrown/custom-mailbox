@@ -15,7 +15,7 @@ class View {
         
         $this->twig = new Environment($this->loader, [
             'cache' => __DIR__.'/../core/cache',
-            'debug' => DEBUG
+            'debug' => getenv("DEBUG", false)
         ]);
     }
 

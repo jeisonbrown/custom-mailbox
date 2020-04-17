@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use \Exception;
 use Core\RouteCollector;
 use Core\View;
 use Phroute\Phroute\Dispatcher;
@@ -28,11 +29,11 @@ class Route {
         }
     }
 
-    public static function dispatch() {
+    public static function dispatch($collector) {
         
         try {
             
-            $routes = self::getCollector()->getData();
+            $routes = $collector->getData();
             $dispatcher = new Dispatcher($routes);
             echo $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
         
