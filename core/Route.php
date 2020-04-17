@@ -6,7 +6,7 @@ use \Exception;
 use Core\RouteCollector;
 use Core\View;
 use Phroute\Phroute\Dispatcher;
-use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
+// use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
 use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 
 class Route {
@@ -40,7 +40,6 @@ class Route {
         } catch(Exception $e) {
             switch (get_class($e)) {
                 case 'Phroute\\Phroute\\Exception\\HttpRouteNotFoundException':
-                    echo "asdsa";
                     break;
                 case 'Phroute\\Phroute\\Exception\\HttpMethodNotAllowedException':
                     http_response_code(403);

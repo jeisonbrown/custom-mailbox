@@ -18,9 +18,12 @@ $collector->filter('no-auth', function(){
     }
 });
 
+$collector->get('/signup', 'AuthController::getSignup');
+
 $collector->group(['before' => 'auth'], function($router){
     $router->get('/', 'InboxController::getIndex');
     $router->get('/{id:\d+}', 'InboxController::getDetail');
+    $router->get('/logout', 'AuthController::getLogout');
 });
 
 $collector->group(['before' => 'no-auth'], function($router){
@@ -32,4 +35,4 @@ $collector->group(['before' => 'no-auth'], function($router){
 
 
 
-$collector->get('/signup', 'AuthController::getSignup');
+

@@ -13,6 +13,11 @@ class AuthController extends \Core\Controller {
         return $this->render('auth.login', $_GET);
     }
 
+    public function getLogout(){
+        session_destroy();
+        return $this->redirect('/login');
+    }
+
     public function postLogin(){
         $pass = sha1($_POST['password']);
         $strSQL="SELECT email, password from users WHERE email='{$_POST['email']}' and password='{$pass}'";
