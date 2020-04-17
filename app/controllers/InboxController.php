@@ -5,6 +5,10 @@ namespace Controller;
 class InboxController extends \Core\Controller {
 
     public function getIndex(){
-        return $this->render('inbox');
+        return $this->render('inbox.index');
+    }
+
+    public function getDetail($id = null){
+        return $this->render('inboxDetail.index');
     }
 }

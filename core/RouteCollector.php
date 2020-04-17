@@ -24,14 +24,14 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector{
     }
 
     public function controller($requestMethod, $route, $classnameFunc, array $filters = []) {
-      
+        
       $custom = explode('::', $classnameFunc);
-    
+      
       if(empty($custom[0]) || empty($custom[1])){
           parent::controller($route, $classnameFunc, $filters);
           return $this;
       }
-
+      
       $method = false;
       $classname = $custom[0];
       $funcName = $custom[1];
@@ -55,13 +55,10 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector{
         $methodName = $this->camelCaseToDashed($method->name);
         
         $params = $this->buildControllerParameters($method);
-        
-        if($methodName === self::DEFAULT_CONTROLLER_ROUTE) {
-            $this->addRoute($requestMethod, $route . $params, [$classname, $method->name], $filters);
-        }
 
-        $this->addRoute($requestMethod, $route . $params, [$classname, $method->name], $filters);
-     }
+        $this->addRoute($requestMethod, $route, [$classname, $method->name], $filters);
+        
+    }
       
       return $this;
   }

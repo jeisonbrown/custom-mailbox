@@ -16,7 +16,6 @@ class Route {
         if (!self::$collector instanceof RouteCollector) {
             self::$collector = new RouteCollector();
         }
-
         return self::$collector;
     }
 

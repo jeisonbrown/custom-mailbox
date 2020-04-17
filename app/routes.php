@@ -1,6 +1,5 @@
 <?php 
 
 use Core\Route;
-Route::get('/', 'InboxController');
-
-// Route::get('/inbox', 'InboxController');
+Route::get('/', 'InboxController::getIndex');
+Route::get('/{id}', 'InboxController::getDetail');

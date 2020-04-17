@@ -1,88 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<title>Mailbox | {% title %}</title>
+<html lang="es">
+    
+{{ include('components/common/head.html') }}
 
-		<!-- Favicon -->
-		<link rel="shortcut icon" href="favicon.ico">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
-		
-		<!-- vector map CSS -->
-		<!-- <link href="../vendors/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css" rel="stylesheet" type="text/css"/> -->
-		
-		<!-- Bootstrap Wysihtml5 css -->
-		<link rel="stylesheet" href="vendors/bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css" />
-		
-		<!-- Custom CSS -->
-		<link href="dist/css/style.css" rel="stylesheet" type="text/css">
-	</head>
-	<body>
-		<!--Preloader-->
-		{{ include('components/preloader.html') }}
-		<!--/Preloader-->
-		
-		<div class="wrapper box-layout error-page pa-0">
-			
-      {{ include('components/header.html') }}
-			
-			<!-- Main Content -->
-			<div class="page-wrapper pa-0 ma-0 error-bg-img">
-				<div class="container-fluid">
-					<!-- Row -->
-					<div class="table-struct full-width full-height">
-						<div class="table-cell vertical-align-middle auth-form-wrap">
-							<div class="auth-form  ml-auto mr-auto no-float">
-								<div class="row">
-									<div class="col-sm-12 col-xs-12">
-										<div class="mb-30">
-											<span class="block error-head text-center txt-orange mb-10">404</span>
-											<span class="text-center nonecase-font mb-20 block error-comment">Page Not Found</span>
-											<p class="text-center">The URL may be misplaced or the pahe you are looking is no longer available.</p>
-										</div>	
-									</div>	
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /Row -->	
-				</div>
-			</div>
-			<!-- /Main Content -->
-		
-		</div>
-		<!-- /#wrapper -->
-		
+<body>
 
-		<!-- jQuery -->
-	<script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+    {{ include('components/preloader.html') }}
 
-	<!-- Bootstrap Core JavaScript -->
-	<script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	
-	<!-- wysuhtml5 Plugin JavaScript -->
-	<script src="vendors/bower_components/wysihtml5x/dist/wysihtml5x.min.js"></script>
-	
-	<script src="vendors/bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js"></script>
-	
-	<!-- Fancy Dropdown JS -->
-	<script src="dist/js/dropdown-bootstrap-extended.js"></script>
-	
-	<!-- Bootstrap Wysuhtml5 Init JavaScript -->
-	<script src="dist/js/bootstrap-wysuhtml5-data.js"></script>
-	
-	<!-- Slimscroll JavaScript -->
-	<script src="dist/js/jquery.slimscroll.js"></script>
-	
-	<!-- Owl JavaScript -->
-	<script src="vendors/bower_components/owl.carousel/dist/owl.carousel.min.js"></script>
-	
-	<!-- Switchery JavaScript -->
-	<script src="vendors/bower_components/switchery/dist/switchery.min.js"></script>
-	
-	<!-- Init JavaScript -->
-	<script src="dist/js/init.js"></script>
+    <div class="wrapper theme-1-active primary-color-blue slide-nav-toggle">
 
-	</body>
+        {{ include('components/topMenu.html') }}
+
+        <!--  include('components/leftSidebar.html') }} -->
+
+        {{ include('components/rightSidebar.html') }}
+
+        <!-- include('components/rightSetting.html') }} -->
+
+        <!-- Main Content -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                {{ include('components/title.html') }}
+
+                <!-- Row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default card-view pa-0">
+                            <div class="panel-wrapper collapse in">
+                                <div class="panel-body pa-0">
+                                    <div class="mail-box">
+                                        <div class="row">
+                                            <aside class="col-lg-3 col-md-4 pr-0">
+
+                                                {{ include('components/compose.html') }}
+
+                                                {{ include('components/inboxNav.html') }}
+
+                                                {# {{ include('components/labels.html') }} #}
+
+                                                {# {{ include('components/online.html') }} #}
+
+                                            </aside>
+
+                                            <aside class="col-lg-9 col-md-8 pl-0">
+                                                <div class="panel panel-refresh pa-0">
+                                                    <div class="refresh-container">
+                                                        <div class="la-anim-1"></div>
+                                                    </div>
+                                                    <div class="panel-heading pt-20 pb-20 pl-15 pr-15">
+                                                        <div class="pull-left">
+                                                            <h6 class="panel-title txt-dark">inbox</h6>
+                                                        </div>
+                                                        <div class="pull-right">
+                                                            <form role="search"
+                                                                class="inbox-search inline-block pull-left mr-15">
+                                                                <div class="input-group">
+                                                                    <input name="example-input1-group2"
+                                                                        class="form-control" placeholder="Search"
+                                                                        type="text">
+                                                                    <span class="input-group-btn">
+                                                                        <button type="button" class="btn  btn-default"
+                                                                            data-target="#search_form"
+                                                                            data-toggle="collapse" aria-label="Close"
+                                                                            aria-expanded="true"><i
+                                                                                class="zmdi zmdi-search"></i></button>
+                                                                    </span>
+                                                                </div>
+                                                            </form>
+                                                            <a href="#" class="pull-left inline-block refresh">
+                                                                <i class="zmdi zmdi-replay"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="panel-wrapper collapse in">
+                                                        <div class="panel-body inbox-body pa-0">
+                                                            {% block body %}{% endblock %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </aside>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Row -->
+            </div>
+
+            {{ include('components/footer.html') }}
+
+        </div>
+        <!-- /Main Content -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    {{ include('components/common/scripts.html') }}
+
+</body>
+
 </html>
