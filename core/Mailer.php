@@ -10,9 +10,9 @@ class Mailer
 {
    private $db;
 
-   private $host     = "smtp.mailgun.org"; // sets GMAIL as the SMTP server
-   private $username = "postmaster@sandboxcf738d606a6b4bb0a75e63f07cc362e1.mailgun.org"; // GMAIL username
-   private $password = "be089442e9676dac42d38c734df424f9-915161b7-44089415";
+   private $host     = "smtp-relay.sendinblue.com"; // sets GMAIL as the SMTP server
+   private $username = "sanruiz1003@gmail.com"; // GMAIL username
+   private $password = "h7DUzBcXFnNAvPZg";
    private $port     = 587; // 587;
 
    private $mail;
@@ -89,7 +89,7 @@ class Mailer
       try {
          // $this->mail->Sender = 'noreply@example.com';
          // $this->mail->addCustomHeader('Sender', 'ACME <noreply@example.com>');
-         $this->mail->addReplyTo($this->username);
+         // $this->mail->addReplyTo($this->username);
          return $this->mail->send();
       } catch (Exception $e) {
          if(getenv('DEBUG', false)){
