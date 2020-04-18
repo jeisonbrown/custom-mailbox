@@ -20,19 +20,19 @@ class InboxController extends \Core\Controller
         return $errors;
     }
 
-    private function addEmailsToMailer($mailer) {
+    private function addEmailsToMailer($mailer)
+    {
         $errors = [];
         $emailValues = [];
         $emailFields = ['to', 'reply', 'emailFrom'];
         foreach ($emailFields as $field) {
-            if(empty($_POST[$field])){
+            if (empty(trim($_POST[$field]))) {
                 continue;
             }
 
             $values = explode(',', $_POST[$field]);
             foreach ($values as $value) {
                 $email = trim($value);
-
                 $isEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
                 $inArray = !empty($emailValues[$field]) && in_array($email, $emailValues[$field]);
 
@@ -45,7 +45,7 @@ class InboxController extends \Core\Controller
                             $mailer->addCC($email);
                             break;
                         case 'reply':
-                            if(empty($emailValues[$field])){
+                            if (empty($emailValues[$field])) {
                                 $mailer->addReplyTo($email, $_POST['nameFrom']);
                             }
                             break;
@@ -58,13 +58,13 @@ class InboxController extends \Core\Controller
             }
         }
 
-        foreach($emailFields as $field){
-            if(empty($emailValues[$field])){
+        foreach ($emailFields as $field) {
+            if (empty($emailValues[$field])) {
                 $errors[$field] = true;
             }
         }
 
-        if(count($errors)){
+        if (count($errors)) {
             return ['errors' => $errors];
         }
 
@@ -87,7 +87,7 @@ class InboxController extends \Core\Controller
         //Verifica los campos requeridos
         $requiredFields = ['to', 'reply', 'subject', 'message', 'emailFrom', 'nameFrom'];
         $errors = $this->sendMessageValidator($requiredFields);
-        
+
         if (count($errors)) {
             return $this->redirect('/', [
                 "errors" => $errors,
@@ -95,22 +95,22 @@ class InboxController extends \Core\Controller
             ]);
         }
 
-        
         $mailer = new Mailer();
         $mailer = $this->addEmailsToMailer($mailer);
 
-        if(is_array($mailer) && count($mailer['errors'])){
+        if (is_array($mailer) && count($mailer['errors'])) {
             return $this->redirect('/', [
                 "errors" => $mailer['errors'],
                 "post" => $_POST,
             ]);
         }
-        
+
+        $mailer->addReplyTo($_POST['emailFrom'], $_POST['nameFrom']);
         $mailer->setFrom($_POST['emailFrom'], $_POST['nameFrom']);
         $mailer->setSubject($_POST['subject']);
         $mailer->setBody($_POST['message']);
 
-        if($_FILES['attachment'] && $_FILES['attachment']['error'] == UPLOAD_ERR_OK){
+        if ($_FILES['attachment'] && $_FILES['attachment']['error'] == UPLOAD_ERR_OK) {
             $mailer->AddAttachment(
                 $_FILES['attachment']['tmp_name'],
                 $_FILES['attachment']['name']
@@ -118,7 +118,8 @@ class InboxController extends \Core\Controller
         }
 
         $sended = $mailer->send();
-        if($sended){
+        if ($sended) {
+            $mailer->save();
             return $this->redirect('/');
         }
 
