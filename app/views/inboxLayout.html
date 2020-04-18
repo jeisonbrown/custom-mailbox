@@ -6,6 +6,16 @@
 
 {% set rightSidebar = true %}
 
+{% block javasripts %}
+    {% if errors is defined %}
+        <script>
+            $(document).ready(function(){
+                $('#composeModal').modal('show');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
 
     {{ include('components/title.html') }}

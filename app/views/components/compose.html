@@ -1,11 +1,11 @@
 <!-- components/compose -->
 <div class="mt-20 mb-20 ml-15 mr-15">
-  <a href="#myModal" data-toggle="modal" title="Compose" class="btn btn-warning btn-block">
+  <a href="#composeModal" data-toggle="modal" title="Compose" class="btn btn-warning btn-block">
     Compose
   </a>
   <!-- Modal -->
-  <div aria-hidden="true" role="dialog" tabindex="-1" id="myModal" class="modal fade"
-    style="display: none;">
+  <div aria-hidden="true" role="dialog" tabindex="-1" id="composeModal" class="modal fade"
+    >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -13,30 +13,48 @@
           <h4 class="modal-title">Compose</h4>
         </div>
         <div class="modal-body">
-          <form role="form" class="form-horizontal">
-            <div class="form-group">
+          <form role="form" class="form-horizontal" action="/send" method="POST"  enctype="multipart/form-data">
+            <div class="form-group {% if errors is defined and errors.nameFrom %} has-error {% endif %}">
+              <label class="col-lg-2 control-label">Name</label>
+              <div class="col-lg-10">
+                <input type="text" placeholder="" name="nameFrom" class="form-control" value="{% if errors is defined %}{{ post.nameFrom }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group {% if errors is defined and errors.emailFrom %} has-error {% endif %}">
+              <label class="col-lg-2 control-label">From</label>
+              <div class="col-lg-10">
+                <input type="text" placeholder="" name="emailFrom" class="form-control" value="{% if errors is defined %}{{ post.emailFrom }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group {% if errors is defined and errors.to %} has-error {% endif %}">
               <label class="col-lg-2 control-label">To</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" id="inputEmail1" class="form-control">
+                <input type="text" placeholder="" name="to" class="form-control" value="{% if errors is defined %}{{ post.to }}{% endif %}">
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-lg-2 control-label">Cc / Bcc</label>
+            {# <div class="form-group {% if errors is defined and errors.cc %} has-error {% endif %} ">
+              <label class="col-lg-2 control-label">Cc</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" id="cc" class="form-control">
+                <input type="text" placeholder="" name="cc" class="form-control" value="{% if errors is defined %}{{ cc }}{% endif %}">
+              </div>
+            </div> #}
+            <div class="form-group {% if errors is defined and errors.reply %} has-error {% endif %}">
+              <label class="col-lg-2 control-label">Reply</label>
+              <div class="col-lg-10">
+                <input type="text" placeholder="" name="reply" class="form-control" value="{% if errors is defined %}{{ post.reply }}{% endif %}">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group {% if errors is defined and errors.subject %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Subject</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" id="inputPassword1" class="form-control">
+                <input type="text" placeholder="" name="subject" class="form-control" value="{% if errors is defined %}{{ post.subject }}{% endif %}">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group {% if errors is defined and errors.message %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Message</label>
               <div class="col-lg-10">
-                <textarea class="textarea_editor form-control" rows="15"
-                  placeholder="Enter text ..."></textarea>
+                <textarea name="message" class="textarea_editor form-control" rows="15"
+                  placeholder="Enter text ...">{% if errors is defined %}{{ post.message }}{% endif %}</textarea>
               </div>
             </div>
             <div class="form-group">

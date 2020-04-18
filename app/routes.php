@@ -21,16 +21,21 @@ $collector->filter('no-auth', function(){
 $collector->get('/signup', 'AuthController::getSignup');
 
 $collector->group(['before' => 'auth'], function($router){
+    
     $router->get('/', 'InboxController::getIndex');
     $router->get('/{id:\d+}', 'InboxController::getDetail');
     $router->get('/logout', 'AuthController::getLogout');
+    $router->post('/send', 'InboxController::sendMessage');
+
 });
 
 $collector->group(['before' => 'no-auth'], function($router){
+    
     $router->get('/login', 'AuthController::getLogin');
     $router->post('/login', 'AuthController::postLogin');
     $router->get('/forgot-password', 'AuthController::getForgotPassword');
     $router->get('/reset-password', 'AuthController::getResetPassword');
+
 });
 
 

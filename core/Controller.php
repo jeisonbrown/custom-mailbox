@@ -13,16 +13,17 @@ class Controller {
     }
 
     public function redirect($location, $params = []) {
-        $queryStringArray = [];
-        foreach($params as $key => $param){
-            $queryStringArray[] = "{$key}={$param}";
-        }
-        $queryString = count($queryStringArray) ? '?' . implode('&', $queryStringArray) : '';
-        header("Location: {$location}{$queryString}");
+        $_SESSION['REQUEST_REDIRECT_PARAMS'] = $params;
+        header("Location: {$location}");
+        exit;
     }
 
     public function render($template, $data = []){
         $view = new View();
+        if(!empty($_SESSION['REQUEST_REDIRECT_PARAMS']) && is_array($_SESSION['REQUEST_REDIRECT_PARAMS'])){
+            $data = array_merge($_SESSION['REQUEST_REDIRECT_PARAMS'], $data);
+            unset($_SESSION['REQUEST_REDIRECT_PARAMS']);
+        }
         return $view->render($template, $data);
     }
 }
