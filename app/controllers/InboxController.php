@@ -37,7 +37,6 @@ class InboxController extends \Core\Controller
                 $inArray = !empty($emailValues[$field]) && in_array($email, $emailValues[$field]);
 
                 if ($isEmail && !$inArray) {
-                    $emailValues[$field][] = $email;
                     switch ($field) {
                         case 'to':
                             $mailer->addAddress($email);
@@ -47,12 +46,14 @@ class InboxController extends \Core\Controller
                             break;
                         case 'reply':
                             if(empty($emailValues[$field])){
-                                $mailer->addReplyTo($email);
+                                $mailer->addReplyTo($email, $_POST['nameFrom']);
                             }
                             break;
                         default:
                             break;
                     }
+
+                    $emailValues[$field][] = $email;
                 }
             }
         }
@@ -84,7 +85,6 @@ class InboxController extends \Core\Controller
     {
 
         //Verifica los campos requeridos
-
         $requiredFields = ['to', 'reply', 'subject', 'message', 'emailFrom', 'nameFrom'];
         $errors = $this->sendMessageValidator($requiredFields);
         
@@ -99,7 +99,7 @@ class InboxController extends \Core\Controller
         $mailer = new Mailer();
         $mailer = $this->addEmailsToMailer($mailer);
 
-        if(count($mailer['errors'])){
+        if(is_array($mailer) && count($mailer['errors'])){
             return $this->redirect('/', [
                 "errors" => $mailer['errors'],
                 "post" => $_POST,
@@ -110,6 +110,12 @@ class InboxController extends \Core\Controller
         $mailer->setSubject($_POST['subject']);
         $mailer->setBody($_POST['message']);
 
+        if($_FILES['attachment'] && $_FILES['attachment']['error'] == UPLOAD_ERR_OK){
+            $mailer->AddAttachment(
+                $_FILES['attachment']['tmp_name'],
+                $_FILES['attachment']['name']
+            );
+        }
 
         $sended = $mailer->send();
         if($sended){

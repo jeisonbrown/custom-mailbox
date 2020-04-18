@@ -3,7 +3,7 @@
 namespace Core;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+// use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 class Mailer
@@ -19,13 +19,9 @@ class Mailer
    function __construct()
    {
 
-      if(getenv('DEBUG', false)){
-         $mail = new PHPMailer(true);
-         $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-      } else {
-         $mail = new PHPMailer();
-      }
-      
+      // $mail = new PHPMailer(true);
+      // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+      $mail = new PHPMailer();
       $mail->isSMTP();
       $mail->Host       = $this->host;                    // Set the SMTP server to send through
       $mail->Username   = $this->username;                     // SMTP username
