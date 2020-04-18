@@ -24,9 +24,11 @@ class InboxController extends \Core\Controller
     {
         $errors = [];
         $emailValues = [];
-        $emailFields = ['to', 'reply', 'emailFrom'];
+        $emailFields = ['to', 'reply', 'emailFrom', 'cc', 'bcc'];
+        $requiredEmailFields = ['to', 'reply', 'emailFrom'];
+
         foreach ($emailFields as $field) {
-            if (empty(trim($_POST[$field]))) {
+            if (empty($_POST[$field]) || empty(trim($_POST[$field]))) {
                 continue;
             }
 
@@ -44,6 +46,9 @@ class InboxController extends \Core\Controller
                         case 'cc':
                             $mailer->addCC($email);
                             break;
+                        case 'bcc':
+                            $mailer->addBCC($email);
+                            break;
                         case 'reply':
                             if (empty($emailValues[$field])) {
                                 $mailer->addReplyTo($email, $_POST['nameFrom']);
@@ -58,7 +63,7 @@ class InboxController extends \Core\Controller
             }
         }
 
-        foreach ($emailFields as $field) {
+        foreach ($requiredEmailFields as $field) {
             if (empty($emailValues[$field])) {
                 $errors[$field] = true;
             }
@@ -87,7 +92,7 @@ class InboxController extends \Core\Controller
         //Verifica los campos requeridos
         $requiredFields = ['to', 'reply', 'subject', 'message', 'emailFrom', 'nameFrom'];
         $errors = $this->sendMessageValidator($requiredFields);
-
+        
         if (count($errors)) {
             return $this->redirect('/', [
                 "errors" => $errors,
@@ -105,7 +110,6 @@ class InboxController extends \Core\Controller
             ]);
         }
 
-        $mailer->addReplyTo($_POST['emailFrom'], $_POST['nameFrom']);
         $mailer->setFrom($_POST['emailFrom'], $_POST['nameFrom']);
         $mailer->setSubject($_POST['subject']);
         $mailer->setBody($_POST['message']);

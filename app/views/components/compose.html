@@ -1,7 +1,7 @@
 <!-- components/compose -->
 <div class="mt-20 mb-20 ml-15 mr-15">
   <a href="#composeModal" data-toggle="modal" title="Compose" class="btn btn-warning btn-block">
-    Compose
+    Nuevo mensaje
   </a>
   <!-- Modal -->
   <div aria-hidden="true" role="dialog" tabindex="-1" id="composeModal" class="modal fade"
@@ -10,48 +10,48 @@
       <div class="modal-content">
         <div class="modal-header">
           <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-          <h4 class="modal-title">Compose</h4>
+          <h4 class="modal-title">Nuevo mensaje</h4>
         </div>
         <div class="modal-body">
           <form role="form" class="form-horizontal" action="/send" method="POST"  enctype="multipart/form-data">
             <div class="form-group {% if errors is defined and errors.nameFrom %} has-error {% endif %}">
-              <label class="col-lg-2 control-label">Name</label>
+              <label class="col-lg-2 control-label">Nombre</label>
               <div class="col-lg-10">
                 <input type="text" placeholder="" name="nameFrom" class="form-control" value="{% if errors is defined %}{{ post.nameFrom }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.emailFrom %} has-error {% endif %}">
-              <label class="col-lg-2 control-label">From</label>
+              <label class="col-lg-2 control-label">Correo</label>
               <div class="col-lg-10">
                 <input type="text" placeholder="" name="emailFrom" class="form-control" value="{% if errors is defined %}{{ post.emailFrom }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.to %} has-error {% endif %}">
-              <label class="col-lg-2 control-label">To</label>
+              <label class="col-lg-2 control-label">Para</label>
               <div class="col-lg-10">
                 <input type="text" placeholder="" name="to" class="form-control" value="{% if errors is defined %}{{ post.to }}{% endif %}">
               </div>
             </div>
-            {# <div class="form-group {% if errors is defined and errors.cc %} has-error {% endif %} ">
-              <label class="col-lg-2 control-label">Cc</label>
+            <div class="form-group {% if errors is defined and errors.cc %} has-error {% endif %} ">
+              <label class="col-lg-2 control-label">CC</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="cc" class="form-control" value="{% if errors is defined %}{{ cc }}{% endif %}">
+                <input type="text" placeholder="" name="cc" class="form-control" value="{% if errors is defined %}{{ post.cc }}{% endif %}">
               </div>
-            </div> #}
+            </div>
             <div class="form-group {% if errors is defined and errors.reply %} has-error {% endif %}">
-              <label class="col-lg-2 control-label">Reply</label>
+              <label class="col-lg-2 control-label">Responder a</label>
               <div class="col-lg-10">
                 <input type="text" placeholder="" name="reply" class="form-control" value="{% if errors is defined %}{{ post.reply }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.subject %} has-error {% endif %}">
-              <label class="col-lg-2 control-label">Subject</label>
+              <label class="col-lg-2 control-label">Asunto</label>
               <div class="col-lg-10">
                 <input type="text" placeholder="" name="subject" class="form-control" value="{% if errors is defined %}{{ post.subject }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.message %} has-error {% endif %}">
-              <label class="col-lg-2 control-label">Message</label>
+              <label class="col-lg-2 control-label">Mensaje</label>
               <div class="col-lg-10">
                 <textarea name="message" class="textarea_editor form-control" rows="15"
                   placeholder="Enter text ...">{% if errors is defined %}{{ post.message }}{% endif %}</textarea>
@@ -60,11 +60,11 @@
             <div class="form-group">
               <div class="col-lg-offset-2 col-lg-10">
                 <div class="fileupload btn btn-info btn-anim mr-10"><i
-                    class="fa fa-paperclip"></i><span class="btn-text">attachments</span>
+                    class="fa fa-paperclip"></i><span class="btn-text">Adjuntar archivo</span>
                   <input type="file" class="upload" name="attachment">
                 </div>
 
-                <button class="btn btn-success" type="submit">Send</button>
+                <button class="btn btn-success" type="submit">Enviar</button>
               </div>
             </div>
           </form>
