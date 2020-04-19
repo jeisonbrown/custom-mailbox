@@ -136,6 +136,7 @@ class Mailer
 
    public function save($folder = 'uploads/attachments'){
 
+      $data['user_id'] = $_SESSION['user']['id'];
       $data['subject'] = $this->mail->Subject;
       $data['message'] = $this->mail->Body;
       $data['name'] = $this->nameFrom;

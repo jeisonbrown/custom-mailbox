@@ -16,7 +16,7 @@
     <a id="toggle_mobile_search" data-toggle="collapse" data-target="#search_form" class="mobile-only-view"
       href="javascript:void(0);"><i class="zmdi zmdi-search"></i></a>
     <a id="toggle_mobile_nav" class="mobile-only-view" href="javascript:void(0);"><i class="zmdi zmdi-more"></i></a>
-    <form id="search_form" role="search" class="top-nav-search collapse pull-left">
+    {# <form id="search_form" role="search" class="top-nav-search collapse pull-left">
       <div class="input-group">
         <input type="text" name="example-input1-group2" class="form-control" placeholder="Buscar">
         <span class="input-group-btn">
@@ -24,7 +24,7 @@
             aria-label="Close" aria-expanded="true"><i class="zmdi zmdi-search"></i></button>
         </span>
       </div>
-    </form>
+    </form> #}
   </div>
   <div id="mobile_only_nav" class="mobile-only-nav pull-right">
     <ul class="nav navbar-right top-nav pull-right">
@@ -196,8 +196,8 @@
           <li>
             <div class="notification-box-head-wrap">
               <span class="notification-box-head pull-left inline-block">Notificaciones</span>
-              {# <a class="txt-danger pull-right clear-notifications inline-block" href="javascript:void(0)"> Borrar todas
-              </a> #}
+              <a class="txt-danger pull-right clear-notifications inline-block" href="javascript:void(0)"> Borrar todas
+              </a>
               <div class="clearfix"></div>
               <hr class="light-grey-hr ma-0" />
             </div>
@@ -286,7 +286,7 @@
           <li>
             <div class="notification-box-bottom-wrap">
               <hr class="light-grey-hr ma-0" />
-              <a class="block text-center read-all" href="javascript:void(0)"> read all </a>
+              <a class="block text-center read-all" style="color: #fff" href="javascript:void(0)">Read all</a>
               <div class="clearfix"></div>
             </div>
           </li>
