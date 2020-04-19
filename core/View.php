@@ -21,5 +21,6 @@ class View {
     public function render($template, $data = []){
         $template = str_replace('.', '/', $template);
         echo $this->twig->render("{$template}.html", $data);
+        exit;
     }
 }

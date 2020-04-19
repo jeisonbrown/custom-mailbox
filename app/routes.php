@@ -5,14 +5,14 @@ use \Core\RouteCollector;
 $collector = new RouteCollector();
 
 $collector->filter('auth', function(){
-    if(!isset($_SESSION['auth'])) {
+    if(!isset($_SESSION['AUTH'])) {
         header('Location: /login');   
         return false;
     }
 });
 
 $collector->filter('no-auth', function(){
-    if(isset($_SESSION['auth'])) {
+    if(isset($_SESSION['AUTH'])) {
         header('Location: /');   
         return false;
     }

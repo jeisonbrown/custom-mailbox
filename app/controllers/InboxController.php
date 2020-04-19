@@ -78,7 +78,9 @@ class InboxController extends \Core\Controller
 
     public function getIndex()
     {
-        return $this->render('inbox.index');
+        $strSQL="SELECT * FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND inbox AND NOT deleted ORDER BY id DESC";
+        $rsEmails = $this->db->query($strSQL)->resultset();
+        return $this->render('inbox.index', $rsEmails);
     }
 
     public function getDetail($id = null)

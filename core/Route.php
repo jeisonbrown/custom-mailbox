@@ -4,10 +4,8 @@ namespace Core;
 
 use \Exception;
 use Core\RouteCollector;
-use Core\View;
 use Phroute\Phroute\Dispatcher;
-use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
-use Phroute\Phroute\Exception\HttpRouteNotFoundException;
+use Core\MailboxException;
 
 class Route {
   
@@ -36,42 +34,19 @@ class Route {
             $routes = $collector->getData();
             $dispatcher = new Dispatcher($routes);
             echo $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-        
+            
         } catch(Exception $e) {
             switch (get_class($e)) {
                 case 'Phroute\\Phroute\\Exception\\HttpRouteNotFoundException':
+                    MailboxException::showMessage($e, 404);
                     break;
                 case 'Phroute\\Phroute\\Exception\\HttpMethodNotAllowedException':
-                    http_response_code(403);
+                    MailboxException::showMessage($e, 403);
                     break;
                 default:
-                    http_response_code(400);
+                    MailboxException::showMessage($e, 400);
                     break;
             }
-        } catch(HttpRouteNotFoundException $e) {
-
-            $theme = new View();
-            return $theme->render('errors.404', [
-                "debug" => boolval(getenv('DEBUG', false)),
-                "message" => $e->getMessage(),
-                "code" => $e->getCode(),
-                "file" => $e->getFile(),
-                "line" => $e->getLine(),
-                "previous" => $e->getPrevious(),
-                "traceAsString" => $e->getTraceAsString()
-            ]);
-        } catch(HttpMethodNotAllowedException $e) {
-
-            $theme = new View();
-            return $theme->render('errors.404', [
-                "debug" => boolval(getenv('DEBUG', false)),
-                "message" => $e->getMessage(),
-                "code" => $e->getCode(),
-                "file" => $e->getFile(),
-                "line" => $e->getLine(),
-                "previous" => $e->getPrevious(),
-                "traceAsString" => $e->getTraceAsString()
-            ]);
         }
     }
 

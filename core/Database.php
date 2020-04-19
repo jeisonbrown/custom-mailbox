@@ -3,12 +3,13 @@
 namespace Core;
 use \PDO;
 use \PDOException;
+use Core\MailboxException;
 
 define('DB_HOST', getenv('DB_HOST', 'localhost'));
 define('DB_USERNAME', getenv('DB_USERNAME', 'mailbox'));
 define('DB_PASSWORD', getenv('DB_PASSWORD', 'mailbox'));
 define('DB_DATABASE', getenv('DB_DATABASE', 'mailbox'));
-define('DEBUG', getenv('DEBUG', false));
+define('DEBUG', boolval(getenv('DEBUG', false)));
 
 class Database {
 
@@ -44,16 +45,21 @@ class Database {
 
         //Create a new PDO instance
         try {
+            
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
             //var_dump( $this->dbh );
         } catch (PDOException $e) {
+             
             if(DEBUG){
                 $this->error = $e->getMessage();
                 var_dump($e); 
                 print_r($this->error);
-                exit();
+                
             }
+
+            exit();
         }
+
         //$this->dbGetQuery=array();
         //$this->bd = $this;
     }
@@ -133,7 +139,12 @@ class Database {
 
     public function execute()
     {
-        return $this->stmt->execute();
+        try{
+            return $this->stmt->execute();
+        }catch(\Exception $e){
+            $errors = $this->getQuery();
+            MailboxException::showMessage($e, 500, $errors);
+        }
     }
 
 

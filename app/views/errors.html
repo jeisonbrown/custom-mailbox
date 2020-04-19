@@ -4,6 +4,12 @@
 
 {% set pageWrapperClass = 'pa-0 ma-0 error-bg-img' %}
 
+{% set withHeader = true %}
+
+{% block header %}	
+	<a class="inline-block btn btn-warning btn-rounded btn-outline nonecase-font" href="/">Back to Home</a>
+{% endblock %}
+
 {% block content %}
 <!-- Row -->
 <div class="table-struct full-width full-height">
@@ -15,19 +21,18 @@
 						<span class="block error-head text-center txt-orange mb-10">{{ code }}</span>
 						<span class="text-center nonecase-font mb-20 block error-comment">{{ title }}</span>
 						<p class="text-center">{{ message }}</p>
-						<div>
-							{% if debug %}
-								<p>Mensaje: {{ message }}</p>
-								<p>Codigo: {{ code }}</p>
-								<p>Archivo: {{ file }}</p>
-								<p>Linea: {{ line }}</p>
-								<p>Anterior: {{ previous }}</p>
-								<p>Traza String: {{ traceAsString }}</p>
-							{% endif %}
-						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div>
+			{% if DEBUG %}
+				<p class="h4 text-center">{{ ERROR_MESSAGE }}</p>
+				<p class="h5 text-center">{{ ERROR_TRACE }}</p>
+				{% for error in ERRORS %}
+					<p class="h5 text-center">{{ error }}</p>
+				{% endfor %}
+			{% endif %}
 		</div>
 	</div>
 </div>

@@ -24,11 +24,11 @@ class AuthController extends \Core\Controller {
         $row = $this->db->query($strSQL)->single();
         
         if($row){
-            $_SESSION['auth'] = true;
-            $_SESSION['user']['id'] = $row['id'];
-            $_SESSION['user']['name'] = $row['name'];
-            $_SESSION['user']['email'] = $row['email'];
-            $_SESSION['user']['role_id'] = $row['role_id'];
+            $_SESSION['AUTH'] = true;
+            $_SESSION['USER_ID'] = $row['id'];
+            $_SESSION['USER_NAME'] = $row['name'];
+            $_SESSION['USER_EMAIL'] = $row['email'];
+            $_SESSION['USER_ROLE'] = $row['role_id'];
             return $this->redirect('/');
         }
 

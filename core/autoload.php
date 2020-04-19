@@ -9,8 +9,7 @@ try {
   $dotenv->load();
 } catch(Exception $e){}
 
-
-if(getenv('DEBUG', false)){
+if(boolval(getenv('DEBUG', false))){
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
 }
