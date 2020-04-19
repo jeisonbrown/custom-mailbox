@@ -3,13 +3,13 @@
     <table class="table table-inbox table-hover mb-0">
         <tbody>
             {% for email in emails %}
-            <tr class="{% if not email.viewed %}unread{% endif %}">
+            <tr onClick="location = '/{{ email.id }}'" class="{% if not email.viewed and not email.sended %}unread{% endif %}">
                 <td class="inbox-small-cells">
                     <div class="checkbox checkbox-default inline-block">
                         <input type="checkbox" id="checkbox012" />
                         <label for="checkbox012"></label>
                     </div>
-                    <i class="zmdi zmdi-star inline-block font-16 {% if email.important %} inbox-started {% endif %}"></i>
+                    {% if not email.sended %} <i class="zmdi zmdi-star inline-block font-16 {% if email.important %} inbox-started {% endif %}"></i>{% endif %}
                 </td>
                 <td class="view-message  dont-show">{{ email.name }} {% if not email.viewed %} <span class="label label-warning pull-right">nuevo</span>{% endif %}
                 </td>

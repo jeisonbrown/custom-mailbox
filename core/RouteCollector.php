@@ -13,7 +13,7 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
     private function buildRoute($method, $route, $handler, $filters){
         if (is_string( $handler ) ) {
             $controller = "\\Controller\\{$handler}";
-            $this->routeController($method, $route, $controller, $filters);
+            $this->addController($method, $route, $controller, $filters);
         } else {
             $this->{$method}($route, $handler, $filters);
         }
@@ -65,13 +65,15 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
     }
    
 
-    public function routeController($requestMethod, $route, $classnameFunc, array $filters = []) {
+    public function addController($requestMethod, $route, $classnameFunc, array $filters = []) {
         
       $custom = explode('::', $classnameFunc);
       if(empty($custom[0]) || empty($custom[1])){
           parent::controller($route, $classnameFunc, $filters);
           return $this;
       }
+      
+
       
       $method = false;
       $classname = $custom[0];
@@ -92,8 +94,8 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
       }
 
       if(in_array($requestMethod, $this->getValidMethods())) { 
-        // $methodName = $this->camelCaseToDashed($method->name);
-        // $params = $this->buildControllerParameters($method);
+        //  $methodName = $this->camelCaseToDashed($method->name);
+        //  $params = $this->buildControllerParameters($method);
         $this->addRoute($requestMethod, $route, [$classname, $method->name], $filters);
     }
       

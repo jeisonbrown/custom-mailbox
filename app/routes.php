@@ -5,10 +5,12 @@ use \Core\RouteCollector;
 $collector = new RouteCollector();
 
 $collector->filter('auth', function(){
+
     if(!isset($_SESSION['AUTH'])) {
         header('Location: /login');   
         return false;
     }
+    
 });
 
 $collector->filter('no-auth', function(){
@@ -16,9 +18,8 @@ $collector->filter('no-auth', function(){
         header('Location: /');   
         return false;
     }
+    
 });
-
-$collector->get('/signup', 'AuthController::getSignup');
 
 $collector->group(['before' => 'auth'], function($router){
     
@@ -26,6 +27,8 @@ $collector->group(['before' => 'auth'], function($router){
     $router->get('/{id:\d+}', 'InboxController::getDetail');
     $router->get('/logout', 'AuthController::getLogout');
     $router->post('/send', 'InboxController::sendMessage');
+    $router->get('/attachments/{user_id:i}/{id}', 'InboxController::downloadAttachment');
+    
 
 });
 

@@ -7,8 +7,7 @@ use Core\View;
 class MailboxException
 {
 
-    private static function getNotFound()
-    {
+    private static function getNotFound() {
         return [
             'code' => 404,
             'title' => 'Página no encontrada',
@@ -16,8 +15,7 @@ class MailboxException
         ];
     }
 
-    private static function getInternalServerError()
-    {
+    private static function getInternalServerError() {
         return [
             'code' => 500,
             'title' => 'Error de servidor interno',
@@ -25,8 +23,7 @@ class MailboxException
         ];
     }
 
-    private static function getMethodNotAllowed()
-    {
+    private static function getMethodNotAllowed() {
         return [
             'code' => 403,
             'title' => 'Metodo no permitido',
@@ -34,8 +31,7 @@ class MailboxException
         ];
     }
 
-    private static function getBadRequest()
-    {
+    private static function getBadRequest() {
         return [
             'code' => 400,
             'title' => 'Petición mala',
@@ -43,32 +39,31 @@ class MailboxException
         ];
     }
 
-    public static function showMessage($e, $code, $additional = [])
-    {
+    public static function showMessage($e, $code, $additional = []) {
         $view = new View();
         $errorInfo = [];
-        switch($code){
-            case 400: 
+        switch ($code) {
+            case 400:
                 $errorInfo = self::getBadRequest();
-            break;
-            case 403: 
+                break;
+            case 403:
                 $errorInfo = self::getMethodNotAllowed();
-            break;
-            case 404: 
+                break;
+            case 404:
                 $errorInfo = self::getNotFound();
-            break;
-            case 500: 
+                break;
+            case 500:
                 $errorInfo = self::getInternalServerError();
-            break;
-            default: 
-                null; 
-            break;
+                break;
+            default:
+                null;
+                break;
         }
 
-        $errorInfo['DEBUG']          = boolval(getenv('DEBUG', false));
-        $errorInfo['ERRORS']         = $additional;
-        $errorInfo['ERROR_MESSAGE']  = $e->getMessage();
-        $errorInfo['ERROR_TRACE']    = $e->getTraceAsString();
+        $errorInfo['DEBUG'] = boolval(getenv('DEBUG', false));
+        $errorInfo['ERRORS'] = $additional;
+        $errorInfo['ERROR_MESSAGE'] = $e->getMessage();
+        $errorInfo['ERROR_TRACE'] = $e->getTraceAsString();
         $view->render('errors', $errorInfo);
     }
 }

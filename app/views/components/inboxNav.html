@@ -1,8 +1,9 @@
 <!-- components/inboxNav -->
 <ul class="inbox-nav mb-30">
   <li class="{% if type == 'inbox' %}active{% endif %}">
-    <a href="/?state={{state}}"><i class="zmdi zmdi-inbox"></i> Recibidos <span
-        class="label label-danger ml-10">2</span></a>
+    <a href="/?state={{state}}"><i class="zmdi zmdi-inbox"></i> Recibidos 
+      <span class="label label-danger ml-10">{{notViewed}}</span>
+    </a>
   </li>
   <li class="{% if type == 'sended' %}active{% endif %}">
     <a href="/?type=sended&amp;state={{state}}"><i class="zmdi zmdi-email-open"></i> Enviados</a>

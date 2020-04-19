@@ -21,7 +21,7 @@ class Route {
     private static function buildRoute($method, $route, $handler, $filters){
         if (is_string( $handler ) ) {
             $controller = "\\Controller\\{$handler}";
-            self::getCollector()->controller($method, $route, $controller, $filters);
+            self::getCollector()->addController($method, $route, $controller, $filters);
         } else {
             self::getCollector()->{$method}($route, $handler, $filters);
         }

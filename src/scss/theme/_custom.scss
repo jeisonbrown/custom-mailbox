@@ -3,3 +3,19 @@
   margin-left: 0 !important;
   left: 0 !important;
 }
+
+.sender-img-wrap img {
+  border-radius: 50%;
+}
+
+.attachment {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px !important;
+  background-color: #fff;
+  border: 1px solid #e6e7e8;
+  color: #e6e7e8;
+  width: 100px !important;
+  height: 70px !important;
+}

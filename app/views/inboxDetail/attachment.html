@@ -1,32 +1,22 @@
 <div class="container-fluid attachment-mail mt-40 mb-40">
+  {% if attachment %}
   <div class="download-blocks mb-20">
-    <span class="pr-15"><i class="zmdi zmdi-attachment-alt pr-10"></i>3 adjuntos</span>
-    <a href="#"><i class="zmdi zmdi-download pr-10"></i>Descargar</a>
+    {# <span class="pr-15"><i class="zmdi zmdi-attachment-alt pr-10"></i>3 adjuntos</span> #}
+    <span><i class="zmdi zmdi-download pr-10"></i>Descargar</span>
   </div>
   <ul>
+    {% for attachment in attachments %}
     <li>
-      <a href="#" class="atch-thumb">
-        <div class="attached-img-container" style="background-image:url(../img/gallery/equal-size/mock1.jpg)"></div>
-        <div class="file-name">
-          Image 1
+      <a href="/attachments/{{id}}/{{ attachment.save_name }}" class="atch-thumb">
+        <div class="attachment attached-img-container" >
+          <i class="fa fa-paperclip"></i>
+        </div>
+        <div class="file-name text-center" style="width: 100px;overflow: hidden;text-overflow: ellipsis;">
+          {{ attachment.name }}
         </div>
       </a>
     </li>
-    <li>
-      <a href="#" class="atch-thumb">
-        <div class="attached-img-container" style="background-image:url(../img/gallery/equal-size/mock2.jpg)"></div>
-        <div class="file-name">
-          Image 2
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="atch-thumb">
-        <div class="attached-img-container" style="background-image:url(../img/gallery/equal-size/mock3.jpg)"></div>
-        <div class="file-name">
-          Image 3
-        </div>
-      </a>
-    </li>
+    {% endfor %}  
   </ul>
+  {% endif %}
 </div>

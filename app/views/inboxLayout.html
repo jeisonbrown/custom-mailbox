@@ -55,10 +55,10 @@
                                                 </h6>
                                             </div>
                                             <div class="pull-right">
+                                                {% if inboxSearch %}
                                                 <form role="search" class="inbox-search inline-block pull-left mr-15">
                                                     <div class="input-group">
-                                                        <input name="example-input1-group2" class="form-control"
-                                                            placeholder="Buscar" type="text">
+                                                        <input name="example-input1-group2" class="form-control" placeholder="Buscar" type="text">  
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn  btn-default"
                                                                 data-target="#search_form" data-toggle="collapse"
@@ -67,9 +67,11 @@
                                                         </span>
                                                     </div>
                                                 </form>
+                                                
                                                 <a href="#" class="pull-left inline-block refresh">
                                                     <i class="zmdi zmdi-replay"></i>
                                                 </a>
+                                                {% endif %}
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>

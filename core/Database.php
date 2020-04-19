@@ -5,10 +5,10 @@ use \PDO;
 use \PDOException;
 use Core\MailboxException;
 
-define('DB_HOST', getenv('DB_HOST', 'localhost'));
-define('DB_USERNAME', getenv('DB_USERNAME', 'mailbox'));
-define('DB_PASSWORD', getenv('DB_PASSWORD', 'mailbox'));
-define('DB_DATABASE', getenv('DB_DATABASE', 'mailbox'));
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_USERNAME', getenv('DB_USERNAME'));
+define('DB_PASSWORD', getenv('DB_PASSWORD'));
+define('DB_DATABASE', getenv('DB_DATABASE'));
 define('DEBUG', boolval(getenv('DEBUG', false)));
 
 class Database {
@@ -33,7 +33,7 @@ class Database {
         $this->setPDOConfig();
     }
 
-    private function setPDOConfig(){
+    private function setPDOConfig() {
         // Set DSN
         $dsn = 'mysql:host=' . $this->host . ';port=3306;dbname=' . $this->dbname . ';charset=utf8';
         // Set options  PDO::ATTR_PERSISTENT
@@ -64,53 +64,44 @@ class Database {
         //$this->bd = $this;
     }
 
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (!self::$instance) {
             self::$instance = new Database();
         }
         return self::$instance;
     }
 
-    public function getConnection()
-    {
+    public function getConnection() {
         return $this;
     }
 
-    public function getQuery()
-    {
+    public function getQuery() {
         $str = str_replace(array("\n", "\r\n", "\r"), '', $this->dbGetQuery);
         return $str;
     }
-    public function setQuery($query)
-    {
+    public function setQuery($query) {
         $this->dbGetQuery[] = $query;
     }
 
-    public function query($query)
-    {
+    public function query($query) {
         $this->dbGetQuery[] = $query;
         $this->stmt = $this->dbh->prepare($query);
         return $this;
     }
 
-    public function execExist($table, $name, $value, $queryAdd = "")
-    {
+    public function execExist($table, $name, $value, $queryAdd = "") {
         $this->query("SELECT 1 FROM $table WHERE $name='$value' " . $queryAdd);
         $this->execute();
         return $this->stmt->fetchColumn();
     }
 
-    public function getConnectionId()
-    {
+    public function getConnectionId() {
         $this->query("SELECT CONNECTION_ID()");
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-
-    public function bind($param, $value, $type = null)
-    {
+    public function bind($param, $value, $type = null) {
         if (is_null($type)) {
             switch (true) {
                 case is_int($value):
@@ -137,45 +128,39 @@ class Database {
     //     }
     // }
 
-    public function execute()
-    {
+    public function execute(){
         try{
             return $this->stmt->execute();
-        }catch(\Exception $e){
+        } catch(\Exception $e){
             $errors = $this->getQuery();
             MailboxException::showMessage($e, 500, $errors);
         }
     }
 
 
-    public function resultset()
-    {
+    public function resultset() {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
-    public function single()
-    {
+    public function single() {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 
-    public function execRowCount()
-    {
+    public function execRowCount() {
         $this->execute();
         return $this->stmt->rowCount();
     }
 
-    public function rowCount()
-    {
+    public function rowCount() {
         return $this->stmt->rowCount();
     }
 
 
-    public function lastInsertId()
-    {
+    public function lastInsertId() {
         return $this->dbh->lastInsertId();
     }
 
@@ -184,26 +169,22 @@ class Database {
      * Transactions allow multiple changes to a database all in one batch.
      */
 
-    public function beginTransaction()
-    {
+    public function beginTransaction() {
         return $this->dbh->beginTransaction();
     }
 
 
-    public function endTransaction()
-    {
+    public function endTransaction() {
         return $this->dbh->commit();
     }
 
 
-    public function cancelTransaction()
-    {
+    public function cancelTransaction() {
         return $this->dbh->rollBack();
     }
 
 
-    public function debugDumpParams()
-    {
+    public function debugDumpParams() {
         return $this->stmt->debugDumpParams();
     }
 }

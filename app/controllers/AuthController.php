@@ -35,10 +35,6 @@ class AuthController extends \Core\Controller {
         return $this->redirect('/login', [ "error" => true ]);
     }
 
-    public function getSignup(){
-        return $this->render('auth.signup');
-    }
-
     public function getForgotPassword(){
         return $this->render('auth.forgotPassword');
     }

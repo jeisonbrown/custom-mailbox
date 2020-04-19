@@ -32,8 +32,7 @@ class Mailer
       $this->debug    = getenv('DEBUG', false);
    }
 
-   function __construct()
-   {
+   function __construct() {
 
       $this->init();
       if($this->debug){
@@ -55,57 +54,47 @@ class Mailer
       $this->db = Database::getInstance();                        // Set email format to HTML
    }
 
-   public function setFrom($address, $name = '', $auto = true)
-   {
+   public function setFrom($address, $name = '', $auto = true) {
       $this->emailFrom = $address;
       $this->nameFrom = $name;
       $this->mail->setFrom($address, $name, $auto);
    }
 
-   public function addAddress($address, $name = '')
-   {
+   public function addAddress($address, $name = '') {
       $this->mail->addAddress($address, $name);
    }
 
-   public function addCC($address, $name = '')
-   {
+   public function addCC($address, $name = '') {
       $this->ccAddresses[] = $address;
       $this->mail->addCC($address, $name);
    }
 
-   public function addBCC($address, $name = '')
-   {
+   public function addBCC($address, $name = '') {
       $this->bccAddresses[] = $address;
       $this->mail->addBCC($address, $name);
    }
 
-   public function addReplyTo($address, $name = '')
-   {
+   public function addReplyTo($address, $name = '') {
       $this->mail->addReplyTo($address, $name);
    }
 
-   public function addAttachment($path, $name = '', $encoding = PHPMailer::ENCODING_BASE64, $type = '', $disposition = 'attachment')
-   {
+   public function addAttachment($path, $name = '', $encoding = PHPMailer::ENCODING_BASE64, $type = '', $disposition = 'attachment') {
       $this->mail->addAttachment($path, $name, $encoding, $type, $disposition);
    }
 
-   public function setSubject($subject = '')
-   {
+   public function setSubject($subject = '') {
       $this->mail->Subject = $subject;
    }
 
-   public function setBody($body = '')
-   {
+   public function setBody($body = '') {
       $this->mail->Body = $body;
    }
 
-   public function setAltBody($altBody = '')
-   {
+   public function setAltBody($altBody = '') {
       $this->mail->AltBody = $altBody;
    }
 
-   public function send()
-   {
+   public function send() {
       try {
          return $this->mail->send();
       } catch (Exception $e) {
@@ -167,8 +156,7 @@ class Mailer
       $this->saveAttachments($folder, $id);
    }
 
-   public function addEmbeddedImage($filename, $name = 'firma')
-   {
+   public function addEmbeddedImage($filename, $name = 'firma') {
       $this->mail->addEmbeddedImage($filename, $name);
    }
 }

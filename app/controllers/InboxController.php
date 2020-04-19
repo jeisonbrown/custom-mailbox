@@ -2,184 +2,36 @@
 
 namespace Controller;
 
-use \Core\Mailer;
-use \Core\Date;
+use Core\Mailer;
+use Core\Date;
 
 class InboxController extends \Core\Controller
 {
 
-    private $rows;
-    private $totalRows;
-    private $currentPage;
-    private $maxPages;
-    private $filters;
-    private $type;
+    use \Controller\Traits\InboxTrait;
+    use \Controller\Traits\InboxSendMessageTrait;
+    use \Controller\Traits\InboxDetailTrait;
 
-    private function sendMessageValidator($requiredFields)
-    {
-        $errors = [];
-        foreach ($requiredFields as $field) {
-            $_POST[$field] = trim($_POST[$field]);
-            if (empty($_POST[$field])) {
-                $errors[$field] = true;
-            }
-        }
+    public function downloadAttachment($email_id, $file){
 
-        return $errors;
-    }
-
-    private function addEmailsToMailer($mailer)
-    {
-        $errors = [];
-        $emailValues = [];
-        $emailFields = ['to', 'reply', 'emailFrom', 'cc', 'bcc'];
-        $requiredEmailFields = ['to', 'reply', 'emailFrom'];
-
-        foreach ($emailFields as $field) {
-            if (empty($_POST[$field]) || empty(trim($_POST[$field]))) {
-                continue;
-            }
-
-            $values = explode(',', $_POST[$field]);
-            foreach ($values as $value) {
-                $email = trim($value);
-                $isEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
-                $inArray = !empty($emailValues[$field]) && in_array($email, $emailValues[$field]);
-
-                if ($isEmail && !$inArray) {
-                    switch ($field) {
-                        case 'to':
-                            $mailer->addAddress($email);
-                            break;
-                        case 'cc':
-                            $mailer->addCC($email);
-                            break;
-                        case 'bcc':
-                            $mailer->addBCC($email);
-                            break;
-                        case 'reply':
-                            if (empty($emailValues[$field])) {
-                                $mailer->addReplyTo($email, $_POST['nameFrom']);
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-
-                    $emailValues[$field][] = $email;
-                }
-            }
-        }
-
-        foreach ($requiredEmailFields as $field) {
-            if (empty($emailValues[$field])) {
-                $errors[$field] = true;
-            }
-        }
-
-        if (count($errors)) {
-            return ['errors' => $errors];
-        }
-
-        return $mailer;
-    }
-
-    private function setTotalRows()
-    {
-        $strSQL = "SELECT id FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND inbox AND NOT deleted";
-        $this->totalRows = $this->db->query($strSQL)->execRowCount();
-    }
-
-    private function setCurrentPage()
-    {
-        $page = !empty($_GET['page']) ? $_GET['page'] : 1;
-
-        if (empty($page) || $page < 1) {
-            $page = 1;
-        }
-
-        if ($page > $this->maxPages) {
-            $page = $this->maxPages;
-        }
-
-        $this->currentPage = $page;
-    }
-
-    private function setMaxPages()
-    {
-        $this->maxPages = ceil(($this->totalRows / $this->rows));
-    }
-
-    private function getFilteredEmails()
-    {
-
-        $limit  = $this->currentPage - 1;
-        $strSQL = "SELECT * FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND ";
-        $strSQL .= implode(' AND ', $this->filters);
-        $strSQL .= " ORDER BY id DESC LIMIT {$limit},{$this->rows}";
-        return $this->db->query($strSQL)->resultset();
-    }
-
-    private function applyFiltersByType(){
-        $this->type = !empty($_GET['type']) ? $_GET['type'] : 'inbox';
-        switch ($this->type) {
-            case 'sended':
-                $this->filters[] = "sended AND NOT deleted";
-                break;
-            case 'important':
-                $this->filters[] = "important AND NOT deleted";
-                break;
-            case 'deleted':
-                $this->filters[] = "deleted";
-                break;
-            default: //inbox 
-                $this->filters[] = "inbox AND NOT deleted";
-                break;
+        $fileRoute = $_SERVER['DOCUMENT_ROOT']."/../uploads/attachments/{$file}";
+        if(file_exists($fileRoute)){
+            $filetype=filetype($fileRoute);
+            $filename=basename($fileRoute);
+            header ("Content-Type: ".$filetype);
+            header ("Content-Length: ".filesize($fileRoute));
+            header ("Content-Disposition: attachment; filename=".$filename);
+            readfile($fileRoute);
+        } else {
+            header("Location: /{$email_id}");
         }
     }
 
-    private function applyFiltersByState(){
-        $this->state = !empty($_GET['state']) ? $_GET['state'] : 'all';
-        switch ($this->state) {
-            case 'viewed':
-                $this->filters[] = "viewed";
-                break;
-            case 'not-viewed':
-                $this->filters[] = "NOT viewed";
-                break;
-            default: //inbox 
-                break;
-        }
-    }
-
-    private function applyFilters()
-    {
-        $this->applyFiltersByType();
-        $this->applyFiltersByState();
-    }
-
-    private function getTypeName(){
-        switch ($this->type) {
-            case 'sended':
-                return 'Enviados';
-                break;
-            case 'important':
-                return 'Destacados';
-                break;
-            case 'deleted':
-                return 'Eliminados';
-                break;
-            default: //inbox 
-                return 'Recibidos';
-                break;
-        }
-    }
-
-    public function getIndex()
-    {
+    public function getIndex() {
 
         $this->rows = intval(getenv('TABLE_ROWS_BY_PAGE', 10));
         $this->applyFilters();
+        $this->setNotViewed();
         $this->setTotalRows();
         $this->setMaxPages();
         $this->setCurrentPage();
@@ -197,17 +49,34 @@ class InboxController extends \Core\Controller
             'totalRows' => $this->totalRows,
             'type' => $this->type,
             'state' => $this->state,
-            'typeName' => $this->getTypeName()
+            'typeName' => $this->getTypeName(),
+            'notViewed' => $this->notViewed
         ]);
     }
 
-    public function getDetail($id = null)
-    {
-        return $this->render('inboxDetail.index');
+    private function getEmailData($id){
+        $strSQL="SELECT * FROM emails WHERE id = '{$id}' LIMIT 1";
+        $rowEmail = $this->db->query($strSQL)->single();
+        $rowEmail['created_at_human'] = Date::format($rowEmail['created_at'], 'human');
+        $rowEmail['created_at'] = Date::format($rowEmail['created_at']);
+        $rowEmail['attachment'] = intval($rowEmail['attachment']);
+
+        if($rowEmail['attachment']){
+            $strSQL="SELECT * FROM email_attachments WHERE email_id='{$id}'";
+            $rowEmail['attachments'] = $this->db->query($strSQL)->resultset();
+        }
+        return $rowEmail;
     }
 
-    public function sendMessage()
-    {
+    public function getDetail($id = null) {
+
+        $this->setNotViewed();
+        $response = $this->getEmailData($id);
+        $response['notViewed'] = $this->notViewed;
+        return $this->render('inboxDetail.index', $response);
+    }
+
+    public function sendMessage() {
 
         //Verifica los campos requeridos
         $requiredFields = ['to', 'reply', 'subject', 'message', 'emailFrom', 'nameFrom'];

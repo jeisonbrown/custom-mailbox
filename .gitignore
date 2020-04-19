@@ -8,6 +8,7 @@ public/bower_components/
 README.md
 public/dist/css/style.css
 public/dist/css/style.css.map
+!/uploads/attachments/mailbox.txt
 uploads/*
 !uploads/attachments/.gitkeep
 .env
