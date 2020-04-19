@@ -3,9 +3,17 @@
 namespace Controller;
 
 use \Core\Mailer;
+use \Core\Date;
 
 class InboxController extends \Core\Controller
 {
+
+    private $rows;
+    private $totalRows;
+    private $currentPage;
+    private $maxPages;
+    private $filters;
+    private $type;
 
     private function sendMessageValidator($requiredFields)
     {
@@ -76,11 +84,121 @@ class InboxController extends \Core\Controller
         return $mailer;
     }
 
+    private function setTotalRows()
+    {
+        $strSQL = "SELECT id FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND inbox AND NOT deleted";
+        $this->totalRows = $this->db->query($strSQL)->execRowCount();
+    }
+
+    private function setCurrentPage()
+    {
+        $page = !empty($_GET['page']) ? $_GET['page'] : 1;
+
+        if (empty($page) || $page < 1) {
+            $page = 1;
+        }
+
+        if ($page > $this->maxPages) {
+            $page = $this->maxPages;
+        }
+
+        $this->currentPage = $page;
+    }
+
+    private function setMaxPages()
+    {
+        $this->maxPages = ceil(($this->totalRows / $this->rows));
+    }
+
+    private function getFilteredEmails()
+    {
+
+        $limit  = $this->currentPage - 1;
+        $strSQL = "SELECT * FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND ";
+        $strSQL .= implode(' AND ', $this->filters);
+        $strSQL .= " ORDER BY id DESC LIMIT {$limit},{$this->rows}";
+        return $this->db->query($strSQL)->resultset();
+    }
+
+    private function applyFiltersByType(){
+        $this->type = !empty($_GET['type']) ? $_GET['type'] : 'inbox';
+        switch ($this->type) {
+            case 'sended':
+                $this->filters[] = "sended AND NOT deleted";
+                break;
+            case 'important':
+                $this->filters[] = "important AND NOT deleted";
+                break;
+            case 'deleted':
+                $this->filters[] = "deleted";
+                break;
+            default: //inbox 
+                $this->filters[] = "inbox AND NOT deleted";
+                break;
+        }
+    }
+
+    private function applyFiltersByState(){
+        $this->state = !empty($_GET['state']) ? $_GET['state'] : 'all';
+        switch ($this->state) {
+            case 'viewed':
+                $this->filters[] = "viewed";
+                break;
+            case 'not-viewed':
+                $this->filters[] = "NOT viewed";
+                break;
+            default: //inbox 
+                break;
+        }
+    }
+
+    private function applyFilters()
+    {
+        $this->applyFiltersByType();
+        $this->applyFiltersByState();
+    }
+
+    private function getTypeName(){
+        switch ($this->type) {
+            case 'sended':
+                return 'Enviados';
+                break;
+            case 'important':
+                return 'Destacados';
+                break;
+            case 'deleted':
+                return 'Eliminados';
+                break;
+            default: //inbox 
+                return 'Recibidos';
+                break;
+        }
+    }
+
     public function getIndex()
     {
-        $strSQL="SELECT * FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND inbox AND NOT deleted ORDER BY id DESC";
-        $rsEmails = $this->db->query($strSQL)->resultset();
-        return $this->render('inbox.index', $rsEmails);
+
+        $this->rows = intval(getenv('TABLE_ROWS_BY_PAGE', 10));
+        $this->applyFilters();
+        $this->setTotalRows();
+        $this->setMaxPages();
+        $this->setCurrentPage();
+        $rsEmails = $this->getFilteredEmails();
+
+        foreach ($rsEmails as $key => $rowEmail) {
+            $rsEmails[$key]['created_at'] = Date::format($rowEmail['created_at']);
+        }
+
+        return $this->render('inbox.index', [
+            'emails' => $rsEmails,
+            'page' => $this->currentPage,
+            'rows' => $this->rows * $this->currentPage,
+            'maxPages' => $this->maxPages,
+            'totalRows' => $this->totalRows,
+            'type' => $this->type,
+            'state' => $this->state,
+            'typeName' => $this->getTypeName()
+        ]);
     }
 
     public function getDetail($id = null)
@@ -94,7 +212,7 @@ class InboxController extends \Core\Controller
         //Verifica los campos requeridos
         $requiredFields = ['to', 'reply', 'subject', 'message', 'emailFrom', 'nameFrom'];
         $errors = $this->sendMessageValidator($requiredFields);
-        
+
         if (count($errors)) {
             return $this->redirect('/', [
                 "errors" => $errors,

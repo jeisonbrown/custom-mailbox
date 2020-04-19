@@ -20,6 +20,8 @@ class Mailer
    private $mail;
    private $emailFrom;
    private $nameFrom;
+   private $ccAddresses = [];
+   private $bccAddresses = [];
 
    private function init(){
       $this->host     = getenv('MAILER_HOST', ''); // sets GMAIL as the SMTP server
@@ -56,7 +58,7 @@ class Mailer
    public function setFrom($address, $name = '', $auto = true)
    {
       $this->emailFrom = $address;
-      $this->emailName = $name;
+      $this->nameFrom = $name;
       $this->mail->setFrom($address, $name, $auto);
    }
 
@@ -67,11 +69,13 @@ class Mailer
 
    public function addCC($address, $name = '')
    {
+      $this->ccAddresses[] = $address;
       $this->mail->addCC($address, $name);
    }
 
    public function addBCC($address, $name = '')
    {
+      $this->bccAddresses[] = $address;
       $this->mail->addBCC($address, $name);
    }
 
@@ -142,8 +146,8 @@ class Mailer
       $data['name'] = $this->nameFrom;
       $data['from'] = $this->emailFrom;
       $data['to'] = implode(',', array_keys($this->mail->getAllRecipientAddresses()));
-      $data['cc'] = implode(',', array_keys($this->mail->getCcAddresses()));
-      $data['bcc'] = implode(',', array_keys($this->mail->getBccAddresses()));
+      $data['cc'] = implode(',', $this->ccAddresses);
+      $data['bcc'] = implode(',', $this->bccAddresses);
       $data['reply'] = implode(',', array_keys($this->mail->getReplyToAddresses()));
       $data['sended'] = 1;
       $data['attachment'] = $this->mail->attachmentExists() ? 1 : 0;

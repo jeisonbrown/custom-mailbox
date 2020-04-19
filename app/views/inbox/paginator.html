@@ -1,12 +1,12 @@
 <!-- components/inboxPaginator -->
 <ul class="unstyled inbox-pagination">
-  <li><span>1-10 of 234</span></li>
+  <li><span>{{page}}-{{rows}} de {{totalRows}}</span></li>
   <li>
-    <a class="pl-15 pr-15" href="#"><i
+    <a class="pl-15 pr-15" href="{% if page == 1 %} javascript:void(0) {% else %} /?page={{ page - 1 }} {% endif %}"><i
         class="fa fa-angle-left  pagination-left"></i></a>
   </li>
   <li>
-    <a href="#"><i class="fa fa-angle-right pagination-right"></i></a>
+    <a href="{% if page >= maxPages %} javascript:void(0) {% else %} /?page={{ page + 1 }} {% endif %}"><i class="fa fa-angle-right pagination-right"></i></a>
   </li>
 </ul>
 <!-- components/inboxPaginator -->
