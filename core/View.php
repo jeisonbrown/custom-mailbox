@@ -12,7 +12,6 @@ class View {
 
     public function __construct(){
         $this->loader = new FilesystemLoader(__DIR__.'/../app/views');
-        
         $this->twig = new Environment($this->loader, [
             'cache' => __DIR__.'/../core/cache',
             'debug' => getenv("DEBUG", false)

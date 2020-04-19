@@ -15,7 +15,7 @@ class Controller {
     public function redirect($location, $params = []) {
         $_SESSION['REQUEST_REDIRECT_PARAMS'] = $params;
         header("Location: {$location}");
-        exit;
+        return true;
     }
 
     public function render($template, $data = []){

@@ -13,24 +13,24 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
     private function buildRoute($method, $route, $handler, $filters){
         if (is_string( $handler ) ) {
             $controller = "\\Controller\\{$handler}";
-            $this->controller($method, $route, $controller, $filters);
+            $this->routeController($method, $route, $controller, $filters);
         } else {
             $this->{$method}($route, $handler, $filters);
         }
     }
 
-    private function camelCaseToDashed($string) {
-        return strtolower(preg_replace('/([A-Z])/', '-$1', lcfirst($string)));
-    }
+    // private function camelCaseToDashed($string) {
+    //     return strtolower(preg_replace('/([A-Z])/', '-$1', lcfirst($string)));
+    // }
 
-    private function buildControllerParameters(ReflectionMethod $method) {
-        $params = '';
-        foreach($method->getParameters() as $param) {
-            $params .= "/{" . $param->getName() . "}" . ($param->isOptional() ? '?' : '');
-        }
+    // private function buildControllerParameters(ReflectionMethod $method) {
+    //     $params = '';
+    //     foreach($method->getParameters() as $param) {
+    //         $params .= "/{" . $param->getName() . "}" . ($param->isOptional() ? '?' : '');
+    //     }
 
-        return $params;
-    }
+    //     return $params;
+    // }
 
     public function get($route, $handler, $filters = []) {
         $this->buildRoute('get', $route, $handler, $filters);
@@ -65,7 +65,7 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
     }
    
 
-    public function controller($requestMethod, $route, $classnameFunc, array $filters = []) {
+    public function routeController($requestMethod, $route, $classnameFunc, array $filters = []) {
         
       $custom = explode('::', $classnameFunc);
       if(empty($custom[0]) || empty($custom[1])){
@@ -77,7 +77,7 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
       $classname = $custom[0];
       $funcName = $custom[1];
       $requestMethod = strtoupper($requestMethod);
-      $sep = $route === '/' ? '' : '/';
+    //   $sep = $route === '/' ? '' : '/';
 
       $reflection = new ReflectionClass($classname);      
       foreach($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $value){
@@ -91,16 +91,12 @@ class RouteCollector extends \Phroute\Phroute\RouteCollector {
           return $this;
       }
 
-      if(in_array($requestMethod, $this->getValidMethods())) {
-
-        $methodName = $this->camelCaseToDashed($method->name);
-        
-        $params = $this->buildControllerParameters($method);
-
+      if(in_array($requestMethod, $this->getValidMethods())) { 
+        // $methodName = $this->camelCaseToDashed($method->name);
+        // $params = $this->buildControllerParameters($method);
         $this->addRoute($requestMethod, $route, [$classname, $method->name], $filters);
-        
     }
       
-      return $this;
+    return $this;
   }
 }

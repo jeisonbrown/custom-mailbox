@@ -10,3 +10,4 @@ public/dist/css/style.css
 public/dist/css/style.css.map
 uploads/*
 !uploads/attachments/.gitkeep
+.env

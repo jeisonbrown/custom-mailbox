@@ -10,26 +10,42 @@ class Mailer
 {
    private $db;
 
-   private $host     = "smtp-relay.sendinblue.com"; // sets GMAIL as the SMTP server
-   private $username = "sanruiz1003@gmail.com"; // GMAIL username
-   private $password = "h7DUzBcXFnNAvPZg";
-   private $port     = 587; // 587;
+   private $host; // sets GMAIL as the SMTP server
+   private $username; // GMAIL username
+   private $password;
+   private $port; // 587;
+   private $secure ;
+   private $debug;
 
    private $mail;
    private $emailFrom;
    private $nameFrom;
 
+   private function init(){
+      $this->host     = getenv('MAILER_HOST', ''); // sets GMAIL as the SMTP server
+      $this->username = getenv('MAILER_USERNAME', ''); // GMAIL username
+      $this->password = getenv('MAILER_PASSWORD', '');
+      $this->port     = getenv('MAILER_PORT', ''); // 587;
+      $this->secure   = getenv('MAILER_ENCRYPTION', 'tls');
+      $this->debug    = getenv('DEBUG', false);
+   }
+
    function __construct()
    {
 
-      $mail = new PHPMailer(true);
-      $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-      // $mail = new PHPMailer();
+      $this->init();
+      if($this->debug){
+         $mail = new PHPMailer(true);
+         $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+      } else {
+         $mail = new PHPMailer();
+      }
+      // 
       $mail->isSMTP();
       $mail->Host       = $this->host;                    // Set the SMTP server to send through
       $mail->Username   = $this->username;                     // SMTP username
       $mail->Password   = $this->password;                               // SMTP password        // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail->SMTPSecure = $this->secure;
       $mail->SMTPAuth   = true;    // Enable SMTP authentication 
       $mail->Port       = $this->port;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
       $mail->isHTML(true);    
@@ -87,12 +103,9 @@ class Mailer
    public function send()
    {
       try {
-         // $this->mail->Sender = 'noreply@example.com';
-         // $this->mail->addCustomHeader('Sender', 'ACME <noreply@example.com>');
-         // $this->mail->addReplyTo($this->username);
          return $this->mail->send();
       } catch (Exception $e) {
-         if(getenv('DEBUG', false)){
+         if($this->debug){
             echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
          }
          return false;

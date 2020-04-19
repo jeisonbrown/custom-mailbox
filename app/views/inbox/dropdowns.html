@@ -1,18 +1,18 @@
 <!-- components/inboxDropdowns -->
 <div class="btn-group">
   <a data-toggle="dropdown" href="#" class="btn  all" aria-expanded="false">
-    All
+    Todos
     <i class="fa fa-angle-down "></i>
   </a>
   <ul class="dropdown-menu">
-    <li><a href="#"> None</a></li>
-    <li><a href="#"> Read</a></li>
-    <li><a href="#"> Unread</a></li>
+    <li><a href="#"> Todos</a></li>
+    <li><a href="#"> Leidos</a></li>
+    <li><a href="#"> Sin leer</a></li>
   </ul>
 </div>
-<div class="btn-group">
+{# <div class="btn-group">
   <a data-toggle="dropdown" href="#" class="btn  blue">
-    Move to
+    Mover a
     <i class="fa fa-angle-down "></i>
   </a>
   <ul class="dropdown-menu">
@@ -23,17 +23,19 @@
     <li class="divider"></li>
     <li><a href="#">Updates</a></li>
   </ul>
-</div>
+</div> #}
 <div class="btn-group">
   <a data-toggle="dropdown" href="#" class="btn  blue" aria-expanded="false">
-    More
+    Más
     <i class="fa fa-angle-down "></i>
   </a>
   <ul class="dropdown-menu">
-    <li><a href="#"><i class="fa fa-pencil"></i> Mark as Read</a></li>
-    <li><a href="#"><i class="fa fa-ban"></i> Spam</a></li>
-    <li class="divider"></li>
-    <li><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+    <li><a href="#"><i class="fa fa-eye"></i> Marcar como leido</a></li>
+    <li><a href="#"><i class="fa fa-eye-slash"></i> Marcar como no leido</a></li>
+    <li><a href="#"><i class="fa fa-star"></i> Marcar como destacado</a></li>
+    {# <li><a href="#"><i class="fa fa-ban"></i> Spam</a></li>
+    <li class="divider"></li> #}
+    <li><a href="#"><i class="fa fa-trash-o"></i> Eliminar</a></li>
   </ul>
 </div>
 <!-- /components/inboxDropdowns -->

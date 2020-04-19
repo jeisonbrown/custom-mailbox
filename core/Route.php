@@ -6,7 +6,7 @@ use \Exception;
 use Core\RouteCollector;
 use Core\View;
 use Phroute\Phroute\Dispatcher;
-// use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
+use Phroute\Phroute\Exception\HttpMethodNotAllowedException;
 use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 
 class Route {
@@ -49,9 +49,22 @@ class Route {
                     break;
             }
         } catch(HttpRouteNotFoundException $e) {
+
             $theme = new View();
             return $theme->render('errors.404', [
-                "debug" => boolval(getenv('DEBUG')),
+                "debug" => boolval(getenv('DEBUG', false)),
+                "message" => $e->getMessage(),
+                "code" => $e->getCode(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine(),
+                "previous" => $e->getPrevious(),
+                "traceAsString" => $e->getTraceAsString()
+            ]);
+        } catch(HttpMethodNotAllowedException $e) {
+
+            $theme = new View();
+            return $theme->render('errors.404', [
+                "debug" => boolval(getenv('DEBUG', false)),
                 "message" => $e->getMessage(),
                 "code" => $e->getCode(),
                 "file" => $e->getFile(),

@@ -4,10 +4,11 @@ namespace Core;
 use \PDO;
 use \PDOException;
 
-define('DB_HOST', 'i2cpbxbi4neiupid.cbetxkdyhwsb.us-east-1.rds.amazonaws.com');
-define('DB_USERNAME', 'is4wk3kyo8g1ise9');
-define('DB_PASSWORD', 'q1qkqdez8qa0qd8c');
-define('DB_DATABASE', 'tsa7s6noqysj8fdd');
+define('DB_HOST', getenv('DB_HOST', 'localhost'));
+define('DB_USERNAME', getenv('DB_USERNAME', 'mailbox'));
+define('DB_PASSWORD', getenv('DB_PASSWORD', 'mailbox'));
+define('DB_DATABASE', getenv('DB_DATABASE', 'mailbox'));
+define('DEBUG', getenv('DEBUG', false));
 
 class Database {
 
@@ -24,10 +25,6 @@ class Database {
     private static $instance = null;
 
     public function __construct() {
-        // $this->host   = getenv('DB_HOST', 'localhost');
-        // $this->user   = getenv('DB_USERNAME', 'mailbox');
-        // $this->pass   = getenv('DB_PASSWORD', 'mailbox');
-        // $this->dbname = getenv('DB_DATABASE', 'mailbox');
         $this->host   = DB_HOST;
         $this->user   = DB_USERNAME;
         $this->pass   = DB_PASSWORD;
@@ -50,10 +47,12 @@ class Database {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
             //var_dump( $this->dbh );
         } catch (PDOException $e) {
-            $this->error = $e->getMessage();
-            var_dump($e); 
-            print_r($this->error);
-            exit();
+            if(DEBUG){
+                $this->error = $e->getMessage();
+                var_dump($e); 
+                print_r($this->error);
+                exit();
+            }
         }
         //$this->dbGetQuery=array();
         //$this->bd = $this;
