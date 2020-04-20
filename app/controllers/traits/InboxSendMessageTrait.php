@@ -19,6 +19,7 @@ trait InboxSendMessageTrait
 
     private function enqueueEmails($mailer, $emailFields) {
         $emailValues = [];
+
         foreach ($emailFields as $field) {
             if (empty($_POST[$field]) || empty(trim($_POST[$field]))) {
                 continue;
@@ -55,7 +56,7 @@ trait InboxSendMessageTrait
             }
         }
 
-        return $emailFields;
+        return $emailValues;
     }
 
     private function addEmailsToMailer($mailer) {
