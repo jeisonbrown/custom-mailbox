@@ -65,7 +65,7 @@ $strSQL.="DROP TABLE IF EXISTS notifications;";
 $strSQL.="CREATE TABLE `notifications` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'sent',
+  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'received',
   `subject` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `message` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(200) COLLATE utf8_unicode_ci NOT NULL,

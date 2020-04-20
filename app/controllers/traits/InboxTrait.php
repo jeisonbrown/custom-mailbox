@@ -101,7 +101,8 @@ trait InboxTrait
     }
 
     private function markAsViewed($id){
-        $strSQL="UPDATE emails SET viewed=1, updated_at=CURRENT_TIMESTAMP WHERE id='{$id}' AND user_id='{$_SESSION['USER_ID']}' LIMIT 1";
+        $date = date('Y-m-d H:i:s');
+        $strSQL="UPDATE emails SET viewed=1, updated_at='{$date}' WHERE id='{$id}' AND user_id='{$_SESSION['USER_ID']}' LIMIT 1";
         $this->db->query($strSQL)->execute();
     }
 }

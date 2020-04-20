@@ -30,7 +30,7 @@ class Mailer
       $this->password = getenv('MAILER_PASSWORD', '');
       $this->port     = getenv('MAILER_PORT', ''); // 587;
       $this->secure   = getenv('MAILER_ENCRYPTION', 'tls');
-      $this->debug    = getenv('DEBUG', false);
+      $this->debug    = boolval(getenv('DEBUG', false));
    }
 
    function __construct() {

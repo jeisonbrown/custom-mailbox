@@ -15,7 +15,7 @@ trait NotificationTrait {
       case 'user':
         return 'yellow';
       default: 
-        return 'green';
+        return 'blue';
     }
   }
 
@@ -24,7 +24,7 @@ trait NotificationTrait {
     $rsNotifications = Database::getInstance()->query($strSQL)->resultset();
     foreach($rsNotifications as $key => $value) {
       $rsNotifications[$key]['created_at_human'] = Date::format($value['created_at'], 'human');
-      $rsNotifications[$key]['color'] = $this->getNotificationColor('send');
+      $rsNotifications[$key]['color'] = $this->getNotificationColor($value['type']);
     }
     
     return [
