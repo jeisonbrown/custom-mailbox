@@ -11,6 +11,7 @@ class InboxController extends \Core\Controller
     use \Controller\Traits\InboxTrait;
     use \Controller\Traits\InboxSendMessageTrait;
     use \Controller\Traits\InboxDetailTrait;
+    use \Controller\Traits\NotificationTrait;
 
     public function downloadAttachment($email_id, $file){
 
@@ -50,7 +51,8 @@ class InboxController extends \Core\Controller
             'type' => $this->type,
             'state' => $this->state,
             'typeName' => $this->getTypeName(),
-            'notViewed' => $this->notViewed
+            'notViewed' => $this->notViewed,
+            'notifications' => $this->getNotifications()
         ]);
     }
 
@@ -74,6 +76,7 @@ class InboxController extends \Core\Controller
         }
         $this->setNotViewed();
         $response = $this->getEmailData($id);
+        $response['notifications'] = $this->getNotifications();
         $response['notViewed'] = $this->notViewed;
         return $this->render('inboxDetail.index', $response);
     }

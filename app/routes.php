@@ -32,8 +32,9 @@ $collector->group(['before' => 'auth'], function($router){
     $router->get('/logout', 'AuthController::getLogout');
     $router->post('/send', 'InboxController::sendMessage');
     $router->get('/attachments/{user_id:i}/{id}', 'InboxController::downloadAttachment');
+    $router->post('/notifications/clear-all', 'NotificationController::clearAll');
+    $router->post('/notifications/goto/{id:\d+}', 'NotificationController::goto');
     
-
 });
 
 $collector->group(['before' => 'no-auth'], function($router){
