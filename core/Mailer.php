@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use Core\Database;
+use Controller\NotificationController;
 class Mailer
 {
    private $db;
@@ -153,8 +154,8 @@ class Mailer
       $strSQL="INSERT INTO emails (" . implode(',', $fields) . ") VALUES (" . implode(',', $values) . ")";
       $this->db->query($strSQL)->execute();
       $id = $this->db->lastInsertId();
-
       $this->saveAttachments($folder, $id);
+      NotificationController::send('Mensaje enviado!', 'Su mensaje ha sido enviado satisfactoriamente. Clic para ver mensaje.', '/' . $id, 'sent');
    }
 
    public function addEmbeddedImage($filename, $name = 'firma') {
