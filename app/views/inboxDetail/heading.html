@@ -7,19 +7,32 @@
     </div>
     <div class="pull-right text-right">
       {# <button class="btn btn-sm mr-10" title="" type="button"><i class="zmdi zmdi-print"></i> </button> #}
-      <button class="btn btn-sm mr-10" title=""><i class="zmdi zmdi-delete"></i></button>
+      <form method="post" action="/mark-as/{{id}}" style="display: inline-block;">
+        <input type="hidden" name="deleted" value="{{ deleted }}" />
+        <button type="submit" class="btn btn-sm mr-10" title=""><i class="zmdi zmdi-delete"></i></button>
+      </form>
       <div class="inline-block dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="zmdi zmdi-more"></i></a>
-        <ul class="dropdown-menu bullet dropdown-menu-right" role="menu">
-          <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-reply" aria-hidden="true"></i>Marcar como no leido</a></li>
-          <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-share" aria-hidden="true"></i>Marcar como importante</a></li>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i
+            class="zmdi zmdi-more"></i></a>
+        <ul  class="dropdown-menu bullet dropdown-menu-right" role="menu">
+          <li role="presentation">
+            <form class="form-submit-link" method="post" action="/mark-as/{{id}}">
+              <input type="hidden" name="viewed" value="{{ viewed }}" />
+              <button type="submit" role="menuitem btn btn-default"><i class="icon wb-reply"></i>Marcar como{% if viewed == '1' %} no{% endif %} leido</button>
+            </form>
+          <li role="presentation">
+              <form class="form-submit-link" method="post" action="/mark-as/{{id}}">
+                <input type="hidden" name="important" value="{{ important }}" />
+                <button type="submit" role="menuitem btn btn-default"><i class="icon wb-share"></i>Marcar como{% if important == '1' %} no{% endif %} destacado</button>
+              </form>
+            </li>
         </ul>
       </div>
 
     </div>
   </div>
   <hr class="light-grey-hr mt-10 mb-15">
-  <div class="container-fluid mb-20">	
+  <div class="container-fluid mb-20">
     <h4 class="weight-500">{{ subject }}</h4>
-  </div>	
+  </div>
 </div>

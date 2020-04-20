@@ -69,11 +69,31 @@ class InboxController extends \Core\Controller
     }
 
     public function getDetail($id = null) {
-
+        if(empty($_GET['not-viewed'])){
+            $this->markAsViewed($id);
+        }
         $this->setNotViewed();
         $response = $this->getEmailData($id);
         $response['notViewed'] = $this->notViewed;
         return $this->render('inboxDetail.index', $response);
+    }
+
+    public function markAs($id){
+        $update = [];
+        $queryString=$_POST['viewed'] == 1 ? '/?not-viewed=1' : '';
+        foreach($_POST as $key => $value){
+            $newValue = $value == 1 ? 0 : 1;
+            $update[] = "{$key}='$newValue'";
+        }
+
+        $strSQL="UPDATE emails SET " . implode(',', $update) . " WHERE id='{$id}' AND user_id='{$_SESSION['USER_ID']}' LIMIT 1";
+        $this->db->query($strSQL)->execute();
+
+        if(!empty($_POST['deleted'])){
+            return $this->redirect('/');
+        }
+
+        return $this->redirect('/' . $id . $queryString);
     }
 
     public function sendMessage() {

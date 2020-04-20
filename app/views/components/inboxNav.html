@@ -2,7 +2,7 @@
 <ul class="inbox-nav mb-30">
   <li class="{% if type == 'inbox' %}active{% endif %}">
     <a href="/?state={{state}}"><i class="zmdi zmdi-inbox"></i> Recibidos 
-      <span class="label label-danger ml-10">{{notViewed}}</span>
+      {% if notViewed %} <span class="label label-danger ml-10">{{notViewed}}</span>{% endif %}
     </a>
   </li>
   <li class="{% if type == 'sended' %}active{% endif %}">

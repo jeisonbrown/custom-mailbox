@@ -139,6 +139,7 @@ class Mailer
       $data['bcc'] = implode(',', $this->bccAddresses);
       $data['reply'] = implode(',', array_keys($this->mail->getReplyToAddresses()));
       $data['sended'] = 1;
+      $data['viewed'] = 1;
       $data['attachment'] = $this->mail->attachmentExists() ? 1 : 0;
       $data['message_id'] = $this->mail->getLastMessageID();
 

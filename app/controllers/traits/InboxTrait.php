@@ -99,4 +99,9 @@ trait InboxTrait
                 return 'Recibidos';
         }
     }
+
+    private function markAsViewed($id){
+        $strSQL="UPDATE emails SET viewed=1, updated_at=CURRENT_TIMESTAMP WHERE id='{$id}' AND user_id='{$_SESSION['USER_ID']}' LIMIT 1";
+        $this->db->query($strSQL)->execute();
+    }
 }
