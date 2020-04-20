@@ -51,6 +51,7 @@ class Mailer
       $mail->SMTPAuth   = true;    // Enable SMTP authentication 
       $mail->Port       = $this->port;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
       $mail->isHTML(true);    
+      $mail->CharSet = 'UTF-8';
       $this->mail = $mail;      
       $this->db = Database::getInstance();                        // Set email format to HTML
    }

@@ -11,8 +11,7 @@ class View
     private $loader;
     private $twig;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->loader = new FilesystemLoader(__DIR__ . '/../app/views');
         $this->twig = new Environment($this->loader, [
             'cache' => __DIR__ . '/../core/cache',
@@ -20,10 +19,14 @@ class View
         ]);
     }
 
-    public function render($template, $data = [])
-    {
+    public function render($template, $data = []) {
         $template = str_replace('.', '/', $template);
         echo $this->twig->render("{$template}.html", $data);
         exit;
+    }
+
+    public function load($template) {
+        $template = str_replace('.', '/', $template);
+        return $this->twig->load("{$template}.html");
     }
 }

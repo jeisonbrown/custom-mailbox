@@ -212,7 +212,11 @@
                   <input type="hidden" name="url" value="{{notification.url}}" />
                   <button type="submit" style="padding:0;background-color: transparent; text-align: left;">
                     <div class="icon bg-{{notification.color}}">
-                      <i class="zmdi zmdi-email"></i>
+                      {% if notification.type == 'user' %}
+                        <i class="zmdi zmdi-account"></i>
+                      {% else %}
+                        <i class="zmdi zmdi-email"></i>
+                      {% endif %}
                     </div>
                     <div class="sl-content">
                       <span class="inline-block capitalize-font  pull-left truncate head-notifications">{{notification.subject}}</span>
@@ -246,7 +250,7 @@
             <a href="#"><i class="zmdi zmdi-card"></i><span>my balance</span></a>
           </li> #}
           <li>
-            <a href="/"><i class="zmdi zmdi-assignment-alert"></i><span>Cambiar clave</span></a>
+            <a href="/reset-password"><i class="zmdi zmdi-assignment-alert"></i><span>Cambiar clave</span></a>
           </li>
           {# <li>
             <a href="/"><i class="zmdi zmdi-email"></i><span>Mensajes</span></a>

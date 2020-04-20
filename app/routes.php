@@ -34,7 +34,6 @@ $collector->group(['before' => 'auth'], function($router){
     $router->get('/attachments/{user_id:i}/{id}', 'InboxController::downloadAttachment');
     $router->post('/notifications/clear-all', 'NotificationController::clearAll');
     $router->post('/notifications/goto/{id:\d+}', 'NotificationController::goto');
-    
 });
 
 $collector->group(['before' => 'no-auth'], function($router){
@@ -42,9 +41,11 @@ $collector->group(['before' => 'no-auth'], function($router){
     $router->get('/login', 'AuthController::getLogin');
     $router->post('/login', 'AuthController::postLogin');
     $router->get('/forgot-password', 'AuthController::getForgotPassword');
-    $router->get('/reset-password', 'AuthController::getResetPassword');
-
+    $router->post('/forgot-password', 'AuthController::postForgotPassword');
 });
+
+$collector->get('/reset-password/{token}?', 'AuthController::getResetPassword');
+$collector->post('/reset-password/{token}?', 'AuthController::postResetPassword');
 
 
 

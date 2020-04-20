@@ -20,7 +20,7 @@ trait NotificationTrait {
   }
 
   private function getNotifications() {
-    $strSQL="SELECT * FROM notifications WHERE user_id='{$_SESSION['USER_ID']}' AND NOT deleted";
+    $strSQL="SELECT * FROM notifications WHERE user_id='{$_SESSION['USER_ID']}' AND NOT deleted ORDER BY id DESC";
     $rsNotifications = Database::getInstance()->query($strSQL)->resultset();
     foreach($rsNotifications as $key => $value) {
       $rsNotifications[$key]['created_at_human'] = Date::format($value['created_at'], 'human');

@@ -19,6 +19,8 @@ $strSQL.="CREATE TABLE `users` (
   `email` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `role_id` int(10) unsigned NOT NULL DEFAULT 1,
+  `token` varchar(45) NULL DEFAULT '',
+  `expiration_token` datetime NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
