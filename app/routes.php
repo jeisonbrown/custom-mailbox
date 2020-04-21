@@ -18,7 +18,21 @@ $collector->filter('no-auth', function(){
         header('Location: /');   
         return false;
     }
-    
+});
+
+$collector->filter('admin', function(){
+    $isAdmin = $_SESSION['USER_ROLE'] == 1;
+    $isSuperAdmin = $_SESSION['USER_ROLE'] == 2;
+    if(!$isAdmin && !$isSuperAdmin) {
+        header('Location: /');   
+        return false;
+    }
+});
+
+$collector->group(['before' => 'admin'], function($router){
+    $router->get('/user/{id}', 'UserController::getUser');
+    $router->post('/user/{id}', 'UserController::postUser');
+    $router->get('/users', 'UserController::getUsers');
 });
 
 $collector->group(['before' => 'auth'], function($router){
@@ -34,6 +48,9 @@ $collector->group(['before' => 'auth'], function($router){
     $router->get('/attachments/{user_id:i}/{id}', 'InboxController::downloadAttachment');
     $router->post('/notifications/clear-all', 'NotificationController::clearAll');
     $router->post('/notifications/goto/{id:\d+}', 'NotificationController::goto');
+
+    $router->get('/profile', 'UserController::getUser');
+    $router->post('/profile', 'UserController::postUser');
 });
 
 $collector->group(['before' => 'no-auth'], function($router){
@@ -46,5 +63,4 @@ $collector->group(['before' => 'no-auth'], function($router){
 
 $collector->get('/reset-password/{token}?', 'AuthController::getResetPassword');
 $collector->post('/reset-password/{token}?', 'AuthController::postResetPassword');
-$collector->get('/email-tracker/{token}', 'InboxController::getTracker');
 

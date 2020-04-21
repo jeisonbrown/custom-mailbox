@@ -6443,7 +6443,7 @@ a.compose-mail {
 		border-top-left-radius: 8px;
 		border-top-right-radius: 8px;
 		overflow: hidden;
-		background-image:url("../../../img/gallery/mock6.jpg");
+		// background-image:url("../../../img/gallery/mock6.jpg");
 		.profile-image-overlay {
 			position:absolute;
 			height:100%;
@@ -6451,7 +6451,8 @@ a.compose-mail {
 			left:0;
 			top:0;
 			background:$black;
-			opacity:.4;
+			background:#e98035;
+			opacity:.7;
 		}
 		.fileupload.btn {
 			position:relative;

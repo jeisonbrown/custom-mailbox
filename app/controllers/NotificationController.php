@@ -21,9 +21,10 @@ class NotificationController extends \Core\Controller
         return $this->redirect($_POST['url']);
     }
 
-    public static function send($subject, $message, $url='/', $type='sent'){
+    public static function send($subject, $message, $url='/', $type='sent', $userId){
         $date = date('Y-m-d H:i:s');
-        $strSQL="INSERT INTO notifications (user_id, subject, message, url, type, created_at) VALUES ('{$_SESSION['USER_ID']}', '{$subject}', '{$message}', '{$url}', '{$type}', '{$date}')";
+        $userId = empty($userId) ? $_SESSION['USER_ID'] : $userId;
+        $strSQL="INSERT INTO notifications (user_id, subject, message, url, type, created_at) VALUES ('{$userId}', '{$subject}', '{$message}', '{$url}', '{$type}', '{$date}')";
         Database::getInstance()->query($strSQL)->execute();
         return true;
     }

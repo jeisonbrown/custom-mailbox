@@ -6520,7 +6520,7 @@ a.compose-mail {
 		border-top-right-radius: 8px;
 		overflow: hidden;
 		min-height:197px;
-		background-image:url("../../../img/gallery/mock6.jpg");
+		// background-image:url("../../../img/gallery/mock6.jpg");
 		.profile-image-overlay {
 			position:absolute;
 			height:100%;
@@ -6529,6 +6529,7 @@ a.compose-mail {
 			top:0;
 			background:$white;
 			opacity:.4;
+			background:#e98035;
 		}
 		.fileupload.btn {
 			position:relative;

@@ -25,7 +25,7 @@ class AuthController extends \Core\Controller
 
     public function postLogin() {
         $pass = sha1($_POST['password']);
-        $strSQL = "SELECT id, email, password, role_id from users WHERE email='{$_POST['email']}' and password='{$pass}'";
+        $strSQL = "SELECT id, email, password, role_id from users WHERE email='{$_POST['email']}' and password='{$pass}' and active and not deleted ";
         $row = $this->db->query($strSQL)->single();
 
         if ($row) {
@@ -47,7 +47,7 @@ class AuthController extends \Core\Controller
     public function postForgotPassword() {
         $email = trim($_POST['email']);
         if ($email) {
-            $strSQL = "SELECT id, name FROM users WHERE email='{$email}' LIMIT 1";
+            $strSQL = "SELECT id, name FROM users WHERE email='{$email}' and active and not delete LIMIT 1";
             $rowUser = $this->db->query($strSQL)->single();
             if ($rowUser) {
                 $token = sha1(time());
@@ -86,7 +86,7 @@ class AuthController extends \Core\Controller
 
         if($token){
             $date = date('Y-m-d H:i:s');
-            $strSQL="SELECT id FROM users WHERE token='{$token}' AND expiration_token > '{$date}' limit 1";
+            $strSQL="SELECT id FROM users WHERE token='{$token}' AND expiration_token > '{$date}' and active and not delete limit 1";
             $rowUser = $this->db->query($strSQL)->single();
             if($rowUser) {
                 $valid = true;
@@ -107,18 +107,18 @@ class AuthController extends \Core\Controller
 
     public function postResetPassword() {
 
-        $strSQL="SELECT id, password, token, email FROM users WHERE id='{$_POST['user_id']}' LIMIT 1";
+        $strSQL="SELECT id, password, token, email FROM users WHERE id='{$_POST['user_id']}' and active and not delete LIMIT 1";
         $rowUser = $this->db->query($strSQL)->single();
 
-        $passwordIsValid = !empty($_POST['old_password']) && sha1($_POST['old_password']) === $rowUser['password'];
-        $tokenIsValid = !empty($_POST['token']) && $_POST['token'] === $rowUser['token'];
+        $passwordIsValid = empty($_POST['old_password']) || sha1($_POST['old_password']) === $rowUser['password'];
+        $tokenIsValid = empty($_POST['token']) || $_POST['token'] === $rowUser['token'];
         $passwordConfirmated = $_POST['password'] === $_POST['confirm_password'];
-        
+
         if(!$passwordConfirmated || !$passwordIsValid){
             return $this->redirect("reset-password/{$_POST['token']}?error=true");
         }
 
-        if($passwordIsValid || $tokenIsValid){
+        if($passwordIsValid && $tokenIsValid){
             $date = date('Y-m-d H:i:s');
             $password = sha1($_POST['confirm_password']);
             $strSQL="UPDATE users SET expiration_token='{$date}', updated_at='{$date}', password='{$password}' WHERE id='{$rowUser['id']}' LIMIT 1";

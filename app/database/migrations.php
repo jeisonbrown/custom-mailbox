@@ -21,6 +21,8 @@ $strSQL.="CREATE TABLE `users` (
   `role_id` int(10) unsigned NOT NULL DEFAULT 1,
   `token` varchar(45) NULL DEFAULT '',
   `expiration_token` datetime NULL,
+  `active` tinyint(1) NULL DEFAULT 1,
+  `deleted` tinyint(1) NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

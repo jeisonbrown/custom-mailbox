@@ -1,0 +1,126 @@
+{% extends 'main.html' %}
+
+{% set topMenu = true %}
+
+
+{% block content %}
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-3 col-xs-12">
+        <div class="panel panel-default card-view  pa-0">
+            <div class="panel-wrapper collapse in">
+                <div class="panel-body  pa-0">
+                    <div class="profile-box">
+                        <div class="profile-cover-pic">
+                            <div class="profile-image-overlay"></div>
+                        </div>
+                        <div class="profile-info text-center">
+                            <div class="profile-img-wrap">
+                                <img class="inline-block mb-10" src="img/user.png" alt="user" />
+                                {# <div class="fileupload btn btn-default">
+                                    <span class="btn-text">edit</span>
+                                    <input class="upload" type="file">
+                                </div> #}
+                            </div>
+                            <h5 class="block mt-10 mb-5 weight-500 capitalize-font txt-orange">{{user.name}}</h5>
+                            <h6 class="block capitalize-font pb-20">{{user.roleName}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 col-xs-12">
+        <div class="panel panel-default card-view pa-0">
+            <div class="panel-wrapper collapse in">
+                <div class="panel-body pb-0">
+                    <div class="tab-struct custom-tab-1">
+                            <div id="settings_8" class="tab-pane fade in" role="tabpanel">
+                                <!-- Row -->
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="">
+                                            <div class="panel-wrapper collapse in">
+                                                <div class="panel-body pa-0">
+                                                    <div class="col-sm-12 col-xs-12">
+                                                        <div class="form-wrap">
+                                                            <form action="/profile" method="post">
+                                                                <input type="hidden" name="user_id" value="{{user.id}}" />
+                                                                <div class="form-body overflow-hide">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label mb-10"
+                                                                            for="exampleInputuname_01">Nombre</label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon"><i
+                                                                                    class="icon-user"></i></div>
+                                                                            <input type="text" class="form-control"
+                                                                                id="exampleInputuname_01"
+                                                                                name="name"
+                                                                                value="{{user.name}}"
+                                                                                placeholder="willard bryant">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label mb-10"
+                                                                            for="exampleInputEmail_01">Correo electrónico</label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon"><i
+                                                                                    class="icon-envelope-open"></i>
+                                                                            </div>
+                                                                            <input type="email" class="form-control"
+                                                                                id="exampleInputEmail_01" name="email"
+                                                                                value="{{user.email}}"
+                                                                                placeholder="nombre@ejemplo.com">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% if admin %}
+                                                                    <div class="form-group">
+                                                                        <label
+                                                                            class="control-label mb-10">Estado</label>
+                                                                        <div>
+                                                                            <div class="radio">
+                                                                                <input type="radio" name="active" id="radio_01" value="1" {% if user.active %}checked{% endif %}>
+                                                                                <label for="radio_01">
+                                                                                    Activo
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="radio">
+                                                                                <input type="radio" name="active" id="radio_02" value="0" {% if not user.active %}checked{% endif %}>
+                                                                                <label for="radio_02">Inactivo</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label mb-10">Rol de usuario</label>
+                                                                        <select class="form-control" data-placeholder="Seleccional un rol" tabindex="1" name="role_id" >
+                                                                            {% for role in roles %}
+                                                                                <option {% if role_id == role.id %}selected{% endif %} value="{{role.id}}">{{role.name}}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="form-actions mt-10">
+                                                                    <button type="submit" class="btn btn-success mr-10 mb-30">Actualizar perfil</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- /Row -->
+
+{% endblock %}

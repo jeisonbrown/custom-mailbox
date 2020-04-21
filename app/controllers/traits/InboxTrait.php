@@ -44,7 +44,7 @@ trait InboxTrait
 
     private function getFilteredEmails() {
 
-        $limit = $this->currentPage - 1;
+        $limit = $this->currentPage > 0  ? $this->currentPage - 1 : 0;
         $strSQL = "SELECT * FROM emails WHERE user_id = '{$_SESSION['USER_ID']}' AND ";
         $strSQL .= implode(' AND ', $this->filters);
         $strSQL .= " ORDER BY id DESC LIMIT {$limit},{$this->rows}";
