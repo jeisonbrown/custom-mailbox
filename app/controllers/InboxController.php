@@ -77,6 +77,7 @@ class InboxController extends \Core\Controller
         }
         $this->setNotViewed();
         $response = $this->getEmailData($id);
+        $response['message'] = preg_replace('/(Content-.*\:.*)|(\-\-00000.*)/', '', $response['message']);
         $response['notifications'] = $this->getNotifications();
         $response['notViewed'] = $this->notViewed;
         return $this->render('inboxDetail.index', $response);

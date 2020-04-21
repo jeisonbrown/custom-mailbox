@@ -2,6 +2,7 @@
 
 namespace Controller\Traits;
 
+use Controller\NotificationController;
 trait InboxTrait
 {
 
@@ -86,8 +87,6 @@ trait InboxTrait
             
             for($i = 1; $i < $MC->Nmsgs; $i++){
 
-                //var_dump($structure = imap_fetchstructure($imap, $i));
-
                 $imapBody = imap_qprint(imap_body($imap, $i));
                 // $replace = preg_replace('/(<span id=)(.*)(\[\[HASH\:\-\-)/', '[[HASH:--', $imapBody);
                 // preg_match('/(\[\[HASH\:\-\-)(.*)(\-\-\]\])/', $replace, $matches, PREG_OFFSET_CAPTURE);
@@ -146,6 +145,9 @@ trait InboxTrait
 
                 $strSQL="INSERT INTO emails (" . implode(',', $keys) . ") VALUES (" . implode(',', $values) . ");";
                 $this->db->query($strSQL)->execute();
+
+                $id = $this->db->lastInsertId();
+                NotificationController::send('Nuevo mensaje!', 'Has recibido un nuevo mensaje.', '/' . $id, 'received');
             }
 
             imap_close($imap);
