@@ -76,83 +76,88 @@ trait InboxTrait
         $password = getenv('IMAP_PASSWORD');
         $defaultMailbox = "{" . "{$host}:{$port}/{$protocole}/ssl}INBOX";
 
-        $imap = imap_open($defaultMailbox, $username, $password);
+        try{
+            $imap = imap_open($defaultMailbox, $username, $password);
 
-        if ($imap) {
+            if ($imap) {
 
-            $debug = boolval(getenv('DEBUG', false));
-            
-            $MC = imap_check($imap);
-            imap_headers($imap);
-            
-            for($i = 1; $i < $MC->Nmsgs; $i++){
+                $MC = imap_check($imap);
+                imap_headers($imap);
+                
+                for($i = 1; $i < $MC->Nmsgs; $i++){
 
-                $imapBody = imap_qprint(imap_body($imap, $i));
-                // $replace = preg_replace('/(<span id=)(.*)(\[\[HASH\:\-\-)/', '[[HASH:--', $imapBody);
-                // preg_match('/(\[\[HASH\:\-\-)(.*)(\-\-\]\])/', $replace, $matches, PREG_OFFSET_CAPTURE);
-                preg_match('/(\[\[HASH\:\-\-)(.*)(\-\-\]\])/', htmlspecialchars($imapBody), $matches, PREG_OFFSET_CAPTURE);
-                if(empty($matches[2])){
-                    continue;
+                    $imapBody = imap_qprint(imap_body($imap, $i));
+                    // $replace = preg_replace('/(<span id=)(.*)(\[\[HASH\:\-\-)/', '[[HASH:--', $imapBody);
+                    // preg_match('/(\[\[HASH\:\-\-)(.*)(\-\-\]\])/', $replace, $matches, PREG_OFFSET_CAPTURE);
+                    preg_match('/(\[\[HASH\:\-\-)(.*)(\-\-\]\])/', htmlspecialchars($imapBody), $matches, PREG_OFFSET_CAPTURE);
+                    if(empty($matches[2])){
+                        continue;
+                    }
+
+
+                    $token = $matches[2];
+                    
+                    if(empty($token[0])){
+                        continue;
+                    }
+                    
+                    $strSQL="SELECT id, user_id, token FROM emails WHERE token='{$token[0]}' LIMIT 1";
+                    $rowEmail = $this->db->query($strSQL)->single();
+
+                    if(!$rowEmail){
+                        continue;
+                    }
+
+                    $headers = imap_headerinfo($imap, $i);
+                    $message = addslashes($imapBody);
+                    $message = preg_replace('/(<span(.*)id=)(.*)(\[\[HASH\:\-\-)(.*)(\-\-\]\])(.*)(<\/(.*)span>)/', '', $message);
+                    $data['message'] = $message;
+                    $data['user_id'] = $rowEmail['user_id'];
+                    $data['parent_id'] = $rowEmail['id'];
+                    $data['token'] = $rowEmail['token'];
+                    $data['subject'] = $headers->subject;
+                    
+                    $fromList = $this->arrayHeaderToCommaSeparated($headers, 'from');
+                    $toList = $this->arrayHeaderToCommaSeparated($headers, 'to');
+                    $ccList = $this->arrayHeaderToCommaSeparated($headers, 'cc');
+                    $bccList = $this->arrayHeaderToCommaSeparated($headers, 'bcc');
+                    $replyToList = $this->arrayHeaderToCommaSeparated($headers, 'reply_to');
+
+                    $data['name'] = $fromList['names'];
+                    $data['from'] = $fromList['emails'];
+                    $data['to'] = $toList['emails'];
+                    $data['cc'] = $ccList['emails'];
+                    $data['bcc'] = $bccList['emails'];
+                    $data['reply'] = $replyToList['emails'];
+                    
+                    $data['message_id'] = $headers->message_id;
+                    $data['inbox'] = 1;
+                    $data['important'] = 0;
+                    $data['attachment'] = 0;
+                    $data['created_at'] = date('Y-m-d H:i:s', strtotime($headers->date));
+                    
+                    $keys = [];
+                    $values = [];
+                    foreach($data as $key => $value){
+                        $keys[] ="`{$key}`";
+                        $values[] ="'{$value}'";
+                    }
+
+                    $strSQL="INSERT INTO emails (" . implode(',', $keys) . ") VALUES (" . implode(',', $values) . ");";
+                    $this->db->query($strSQL)->execute();
+
+                    $id = $this->db->lastInsertId();
+                    NotificationController::send('Nuevo mensaje!', 'Has recibido un nuevo mensaje.', '/' . $id, 'received');
                 }
 
-
-                $token = $matches[2];
-                
-                if(empty($token[0])){
-                    continue;
-                }
-                
-                $strSQL="SELECT id, user_id, token FROM emails WHERE token='{$token[0]}' LIMIT 1";
-                $rowEmail = $this->db->query($strSQL)->single();
-
-                if(!$rowEmail){
-                    continue;
-                }
-
-                $headers = imap_headerinfo($imap, $i);
-                $message = addslashes($imapBody);
-                $message = preg_replace('/(<span(.*)id=)(.*)(\[\[HASH\:\-\-)(.*)(\-\-\]\])(.*)(<\/(.*)span>)/', '', $message);
-                $data['message'] = $message;
-                $data['user_id'] = $rowEmail['user_id'];
-                $data['parent_id'] = $rowEmail['id'];
-                $data['token'] = $rowEmail['token'];
-                $data['subject'] = $headers->subject;
-                
-                $fromList = $this->arrayHeaderToCommaSeparated($headers, 'from');
-                $toList = $this->arrayHeaderToCommaSeparated($headers, 'to');
-                $ccList = $this->arrayHeaderToCommaSeparated($headers, 'cc');
-                $bccList = $this->arrayHeaderToCommaSeparated($headers, 'bcc');
-                $replyToList = $this->arrayHeaderToCommaSeparated($headers, 'reply_to');
-
-                $data['name'] = $fromList['names'];
-                $data['from'] = $fromList['emails'];
-                $data['to'] = $toList['emails'];
-                $data['cc'] = $ccList['emails'];
-                $data['bcc'] = $bccList['emails'];
-                $data['reply'] = $replyToList['emails'];
-                
-                $data['message_id'] = $headers->message_id;
-                $data['inbox'] = 1;
-                $data['important'] = 0;
-                $data['attachment'] = 0;
-                $data['created_at'] = date('Y-m-d H:i:s', strtotime($headers->date));
-                
-                $keys = [];
-                $values = [];
-                foreach($data as $key => $value){
-                    $keys[] ="`{$key}`";
-                    $values[] ="'{$value}'";
-                }
-
-                $strSQL="INSERT INTO emails (" . implode(',', $keys) . ") VALUES (" . implode(',', $values) . ");";
-                $this->db->query($strSQL)->execute();
-
-                $id = $this->db->lastInsertId();
-                NotificationController::send('Nuevo mensaje!', 'Has recibido un nuevo mensaje.', '/' . $id, 'received');
+                imap_close($imap);
             }
-
-            imap_close($imap);
+        } catch(\Exception $e){
+            if(boolval(getenv('DEBUG', false))){
+                var_dump($e); exit();
+            }
         }
+        
     }
 
     private function applyFiltersByType() {
