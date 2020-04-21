@@ -1,0 +1,309 @@
+{% extends 'main.html' %}
+
+{% set wrapperClass = 'theme-1-active primary-color-blue slide-nav-toggle' %}
+
+{% set topMenu = true %}
+
+{% set rightSidebar = true %}
+
+{% block javasripts %}
+    {% if errors is defined %}
+        <script>
+            $(document).ready(function(){
+                $('#composeModal').modal('show');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {{ include('components/title.html') }}
+    <!-- Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default card-view pa-0">
+                <div class="panel-wrapper collapse in">
+                  <div class="panel-body pa-0">
+                    <div class="contact-list">
+                      <div class="row">
+                        <aside class="col-lg-2 pr-0">
+                          <div class="mt-20 mb-20 ml-15 mr-15">
+                            <a href="#myModal" data-toggle="modal"  title="Compose"    class="btn btn-success btn-block">
+                            Agregar un usuario
+                            </a>
+                            <!-- Modal -->
+                            <div aria-hidden="true" role="dialog" tabindex="-1" id="myModal" class="modal fade" style="display: none;">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Agregar un usuario</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form class="form-horizontal form-material">
+                                      <div class="form-group">
+                                        <div class="col-md-12 mb-20">
+                                          <input type="text" class="form-control" placeholder="Nombre" name="name">
+                                        </div>
+                                        <div class="col-md-12 mb-20">
+                                          <input type="text" class="form-control" placeholder="Email" name="email">
+                                        </div>
+                                        <div class="col-md-12 mb-20">
+                                          <select class="form-control" data-placeholder="Seleccional un rol" tabindex="1" name="role_id" >
+                                            {% for role in roles %}
+                                                <option {% if role_id == role.id %}selected{% endif %} value="{{role.id}}">{{role.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        </div>
+                                        {# <div class="col-md-12 mb-20">
+                                          <div class="fileupload btn btn-danger btn-rounded waves-effect waves-light"><span><i class="ion-upload m-r-5"></i>Upload Contact Image</span>
+                                            <input type="file" class="upload">
+                                          </div>
+                                        </div> #}
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Guardar</button>
+                                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancelar</button>
+                                  </div>
+                                </div>
+                                <!-- /.modal-content -->
+                              </div>
+                              <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+                          </div>
+                          {# <ul class="inbox-nav mb-30">
+                            {% roles %}
+                            <li class="active">
+                              <a href="#">Work <span class="label label-warning ml-10">12</span></a>
+                            </li>
+                            <li>
+                              <a href="#">design <span class="label label-danger ml-10">20</span></a>
+                            </li>
+                            <li>
+                              <a href="#">family <span class="label label-warning ml-10">2</span></a>
+                            </li>
+                            <li>
+                              <a href="#">friends<span class="label label-info ml-10">30</span></a>
+                            </li>
+                            <li>
+                              <a href="#">office <span class="label label-success ml-10">2</span></a>
+                            </li>
+                          </ul> #}
+                          
+                          <a class="txt-success create-label  pa-15" href="javascript:void(0)" data-toggle="modal" data-target="#myModal_1">+ Create New Label</a>
+                          <div id="myModal_1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                  <h5 class="modal-title" id="myModalLabel">Add Lable</h5>
+                                </div>
+                                <div class="modal-body">
+                                  <form>
+                                    <div class="form-group">
+                                      <label class="control-label mb-10">Name of Label</label>
+                                      <input type="text" class="form-control" placeholder="Type name">
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="control-label mb-10">Select Number of people</label>
+                                      <select class="form-control">
+                                        <option>All Contacts</option>
+                                        <option>10</option>
+                                        <option>20</option>
+                                        <option>30</option>
+                                        <option>40</option>
+                                        <option>Custom</option>
+                                      </select>
+                                    </div>
+                                  </form>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">Save</button>
+                                  <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                          </div>
+                        </aside>
+                        
+                        <aside class="col-lg-10 col-md-8 pl-0">
+                          <div class="panel pa-0">
+                          <div class="panel-wrapper collapse in">
+                          <div class="panel-body  pa-0">
+                            <div class="table-responsive mb-30">
+                              <table id="datable_1" class="table  display table-hover mb-30" data-page-size="10">
+                                <thead>
+                                  <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Role</th>
+                                    <th>Joining date</th>
+                                    <th>Salery</th>
+                                    <th>Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td><a href="#">Jens Brincker</a></td>
+                                    <td>jens@gmail.com</td>
+                                    <td>+123 456 789</td>
+                                    <td><span class="label label-danger">Designer</span> </td>
+                                    <td>12-10-2014</td>
+                                    <td>$1200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>2</td>
+                                    <td><a href="#">Mark Hay</a></td>
+                                    <td>markh@gmail.com</td>
+                                    <td>+234 456 789</td>
+                                    <td><span class="label label-info">Developer</span> </td>
+                                    <td>10-09-2014</td>
+                                    <td>$1800</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>3</td>
+                                    <td><a href="#">Anthony Davie</a></td>
+                                    <td>nthonyavie@gmail.com</td>
+                                    <td>+345 456 789</td>
+                                    <td><span class="label label-success">Accountant</span></td>
+                                    <td>1-10-2013</td>
+                                    <td>$2200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>4</td>
+                                    <td><a href="#">David Perry</a></td>
+                                    <td>david@gmail.com</td>
+                                    <td>+456 456 789</td>
+                                    <td><span class="label label-inverse">HR</span></td>
+                                    <td>2-10-2016</td>
+                                    <td>$200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>5</td>
+                                    <td><a href="#">Alan Gilchrist</a></td>
+                                    <td>alan@gmail.com</td>
+                                    <td>+567 456 789</td>
+                                    <td><span class="label label-danger">Manager</span></td>
+                                    <td>10-9-2015</td>
+                                    <td>$1200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>6</td>
+                                    <td><a href="#">Sue Woodger</a></td>
+                                    <td>suew@gmail.com</td>
+                                    <td>+678 456 789</td>
+                                    <td><span class="label label-warning">Chairman</span></td>
+                                    <td>10-5-2013</td>
+                                    <td>$1500</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>7</td>
+                                    <td><a href="#">Barry Croucher</a></td>
+                                    <td>barry@gmail.com</td>
+                                    <td>+123 456 789</td>
+                                    <td><span class="label label-danger">Designer</span></td>
+                                    <td>05-10-2012</td>
+                                    <td>$3200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>8</td>
+                                    <td><a href="#">Ian Vaughn</a></td>
+                                    <td>ian@gmail.com</td>
+                                    <td>+234 456 789</td>
+                                    <td><span class="label label-info">Developer</span></td>
+                                    <td>11-10-2014</td>
+                                    <td>$1800</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>9</td>
+                                    <td><a href="#">Serena Fredrick</a></td>
+                                    <td>serena@gmail.com</td>
+                                    <td>+345 456 789</td>
+                                    <td><span class="label label-success">Accountant</span></td>
+                                    <td>12-5-2016</td>
+                                    <td>$100</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>10</td>
+                                    <td><a href="#">Tim Gray</a></td>
+                                    <td>tim@gmail.com</td>
+                                    <td>+456 456 789</td>
+                                    <td><span class="label label-inverse">HR</span></td>
+                                    <td>18-5-2009</td>
+                                    <td>$4200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>11</td>
+                                    <td><a href="#">Jeremy Upton</a></td>
+                                    <td>jeremy@gmail.com</td>
+                                    <td>+567 456 789</td>
+                                    <td><span class="label label-danger">Manager</span></td>
+                                    <td>12-10-2010</td>
+                                    <td>$5200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>12</td>
+                                    <td><a href="#">Emily Hick</a></td>
+                                    <td>emily@gmail.com</td>
+                                    <td>+123 456 789</td>
+                                    <td><span class="label label-danger">Designer</span> </td>
+                                    <td>12-10-2014</td>
+                                    <td>$1200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>13</td>
+                                    <td><a href="#">Tom Armitage</a></td>
+                                    <td>tom@gmail.com</td>
+                                    <td>+234 456 789</td>
+                                    <td><span class="label label-info">Developer</span> </td>
+                                    <td>10-09-2014</td>
+                                    <td>$1800</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>14</td>
+                                    <td><a href="#">Rhian Davies</a></td>
+                                    <td>rhian@gmail.com</td>
+                                    <td>+345 456 789</td>
+                                    <td><span class="label label-success">Accountant</span></td>
+                                    <td>1-10-2013</td>
+                                    <td>$2200</td>
+                                    <td><a href="javascript:void(0)" class="text-inverse pr-10" title="Edit" data-toggle="tooltip"><i class="zmdi zmdi-edit txt-warning"></i></a><a href="javascript:void(0)" class="text-inverse" title="Delete" data-toggle="tooltip"><i class="zmdi zmdi-delete txt-danger"></i></a></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          </div>
+                          </div>
+                        </aside>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Row -->
+{% endblock %}
