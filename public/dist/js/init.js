@@ -376,3 +376,83 @@ $(window).on("resize", function () {
 }).resize();
 /***** Resize function end *****/
 
+$(document).ready(function(){
+
+	$('tr.email-row-item').on('click', function(e){
+		e.stopPropagation();
+		if(!$(e.target).hasClass('email-item-checkbox')){
+			location = '/' + $(this).eq(0).attr('data-id');
+		}
+	});
+
+	$('#select-all-messages').on('change', function(e){
+		toggleAllMessages(e.target.checked);
+	})
+	
+	$('.email-item-checkbox').on('click', function(e){
+		e.stopPropagation();
+		var id = $(this).data('id')
+		var indexes = $('#selected-items-to-send').val()
+		var indexArray = indexes.trim() ? JSON.parse(indexes) : []
+
+		if(!$(this).prop('checked')){
+			var filtered = indexArray.filter(index => index !== id);
+			$('#selected-items-to-send').val(JSON.stringify(filtered))
+		} else {
+			 var filtered = [...indexArray, id]; 
+			$('#selected-items-to-send').val(JSON.stringify(filtered))
+		}
+	})
+
+	$('.markAllAs').on('click', function() {
+
+			var type = $(this).data('type')
+			var indexes = $('#selected-items-to-send').val();
+			if(indexes){
+				var indexes = JSON.parse(indexes);
+				$.ajax({
+					type: "POST",
+					url: window.location.origin + '/mark-all-as',
+					data: { indexes, type },
+					dataType: 'JSON',
+					success: function(data){
+						if(data.updated){
+							location.reload();
+						}
+					},
+					error: function(e){
+						console.log('error', e)
+					}
+					
+				})
+			}
+
+	})
+	
+
+})
+
+function toggleAllMessages(checked) {
+	var items = $('.email-item-checkbox');
+	var indexArray = []
+	
+	for(var i = 0; i < items.length; i++){
+		var item = $(items[0]);
+		item.prop('checked', checked)
+		if(checked){
+			indexArray.push(item.data('id'));
+		}
+	}
+
+	var indexes = JSON.stringify(indexArray);
+	$('#selected-items-to-send').val(indexes)
+}
+
+function goToEmailDetail(e){
+	const id = $(e.target).data('id')
+	e.stopPropagation();
+	e.preventDefault();
+	location = '/'. id
+	return false;
+}
+

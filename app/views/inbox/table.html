@@ -3,18 +3,18 @@
     <table class="table table-inbox table-hover mb-0">
         <tbody>
             {% for email in emails %}
-            <tr onClick="location = '/{{ email.id }}'" class="{% if not email.viewed and not email.sended %}unread{% endif %}">
-                <td class="inbox-small-cells">
+            <tr id="email-row-{{ email.id }}" data-id="{{ email.id }}" class="{% if not email.viewed and not email.sended %}unread{% endif %} email-row-item">
+                <td class="inbox-small-cells" data-id="{{ email.id }}">
                     <div class="checkbox checkbox-default inline-block">
-                        <input type="checkbox" id="checkbox012" />
-                        <label for="checkbox012"></label>
+                        <input type="checkbox" class="email-item-checkbox" id="checkboxz{{ email.id }}" data-id="{{ email.id }}"/>
+                        <label for="checkboxz{{ email.id }}"></label>
                     </div>
                     {% if not email.sended %} <i class="zmdi zmdi-star inline-block font-16 {% if email.important %} inbox-started {% endif %}"></i>{% endif %}
                 </td>
-                <td class="view-message  dont-show">{{ email.name }} {% if not email.viewed %} <span class="label label-warning pull-right">nuevo</span>{% endif %}
+                <td data-id="{{ email.id }}" class="view-message  dont-show">{{ email.name }} {% if not email.viewed %} <span class="label label-warning pull-right">nuevo</span>{% endif %}
                 </td>
-                <td class="view-message ">{{ email.subject }}</td>
-                <td class="view-message  text-right">
+                <td data-id="{{ email.id }}" class="view-message ">{{ email.subject }}</td>
+                <td data-id="{{ email.id }}" class="view-message  text-right">
                     {% if email.attachment %}<i class="zmdi zmdi-attachment inline-block mr-15 font-16"></i>{% endif %}
                     <span class="time-chat-history inline-block">{{ email.created_at }}</span>
                 </td>

@@ -83,6 +83,38 @@ class InboxController extends \Core\Controller
         return $this->render('inboxDetail.index', $response);
     }
 
+    public function postMarkAllAs(){
+        $query = '';
+        switch($_POST['type']){
+            case 'not-viewed':
+                $query = 'viewed=0';
+            break;
+            case 'viewed':
+                $query = 'viewed=1';
+            break;
+            case 'important':
+                $query = 'viewed=1';
+            break;
+            case 'not-important':
+                $query = 'viewed=1';
+            break;
+            case 'deleted':
+                $query = 'deleted=1';
+            break;
+            default:
+                $query = 'viewed=1';
+            break;
+        }
+        
+
+        $strSQL="UPDATE emails SET {$query} WHERE user_id='{$_SESSION['USER_ID']}' AND id in (" . implode(',', $_POST['indexes']) . ")";
+        $this->db->query($strSQL)->execute();
+        $response['updated'] = true;
+        
+        echo json_encode($response);
+        exit();
+    }
+
     public function markAs($id) {
         $update = [];
         $queryString = $_POST['viewed'] == 1 ? '/?not-viewed=1' : '';

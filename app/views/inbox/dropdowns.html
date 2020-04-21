@@ -30,12 +30,16 @@
     <i class="fa fa-angle-down "></i>
   </a>
   <ul class="dropdown-menu">
-    <li><a href="#"><i class="fa fa-eye"></i> Marcar como leido</a></li>
-    <li><a href="#"><i class="fa fa-eye-slash"></i> Marcar como no leido</a></li>
-    <li><a href="#"><i class="fa fa-star"></i> Marcar como destacado</a></li>
+    <li>
+      <a href="javascript:void(0)" class="markAllAs" data-type="viewed"><i class="fa fa-eye"></i> Marcar como leido</a></li>
+    <li><a href="javascript:void(0)" class="markAllAs" data-type="not-viewed"><i class="fa fa-eye-slash"></i> Marcar como no leido</a></li>
+    <li><a href="javascript:void(0)" class="markAllAs" data-type="important"><i class="fa fa-star"></i> Marcar como destacado</a></li>
+    <li><a href="javascript:void(0)" class="markAllAs" data-type="not-important"><i class="fa fa-star"></i> Marcar como no destacado</a></li>
     {# <li><a href="#"><i class="fa fa-ban"></i> Spam</a></li>
     <li class="divider"></li> #}
-    <li><a href="#"><i class="fa fa-trash-o"></i> Eliminar</a></li>
+    <li><a href="javascript:void(0)" class="markAllAs" data-type="deleted"><i class="fa fa-trash-o"></i> Eliminar</a></li>
   </ul>
+  <input type="hidden" id="selected-items-to-send" />
 </div>
+
 <!-- /components/inboxDropdowns -->

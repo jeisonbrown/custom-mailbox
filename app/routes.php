@@ -33,6 +33,7 @@ $collector->group(['before' => 'admin'], function($router){
     $router->get('/user/{id}', 'UserController::getUser');
     $router->post('/user/{id}', 'UserController::postUser');
     $router->get('/users', 'UserController::getUsers');
+    
 });
 
 $collector->group(['before' => 'auth'], function($router){
@@ -49,6 +50,7 @@ $collector->group(['before' => 'auth'], function($router){
     $router->post('/notifications/clear-all', 'NotificationController::clearAll');
     $router->post('/notifications/goto/{id:\d+}', 'NotificationController::goto');
 
+    $router->post('/mark-all-as', 'InboxController::postMarkAllAs');
     $router->get('/profile', 'UserController::getUser');
     $router->post('/profile', 'UserController::postUser');
 });
