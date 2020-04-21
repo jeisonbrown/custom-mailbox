@@ -423,11 +423,30 @@ $(document).ready(function(){
 					error: function(e){
 						console.log('error', e)
 					}
-					
 				})
 			}
-
 	})
+
+	$('#deleteSingleMessage').on('click', function() {
+
+		var id = $(this).data('id')
+		if(id){
+			$.ajax({
+				type: "POST",
+				url: window.location.origin + '/mark-as/' + id,
+				data: { viewed: 0, deleted: 1 },
+				dataType: 'JSON',
+				success: function(){
+					window.location = '/';
+				},
+				error: function(e){
+					console.log('error', e)
+				}
+			})
+		}
+})
+
+	
 	
 
 })
@@ -437,7 +456,7 @@ function toggleAllMessages(checked) {
 	var indexArray = []
 	
 	for(var i = 0; i < items.length; i++){
-		var item = $(items[0]);
+		var item = $(items[i]);
 		item.prop('checked', checked)
 		if(checked){
 			indexArray.push(item.data('id'));

@@ -1,6 +1,6 @@
 <!-- components/inboxPaginator -->
 <ul class="unstyled inbox-pagination">
-  <li><span>{{page}}-{{rows}} de {{totalRows}}</span></li>
+  <li><span>{{page}}-{{rows}} de {{totalRows}} {{maxPages}}</span></li>
   <li>
     <a class="pl-15 pr-15" href="{% if page == 1 %} javascript:void(0) {% else %} /?page={{ page - 1 }} {% endif %}"><i
         class="fa fa-angle-left  pagination-left"></i></a>

@@ -127,7 +127,8 @@ class InboxController extends \Core\Controller
         $this->db->query($strSQL)->execute();
 
         if (!empty($_POST['deleted'])) {
-            return $this->redirect('/');
+            echo json_encode(['updated' => true]);
+            exit();
         }
 
         return $this->redirect('/' . $id . $queryString);

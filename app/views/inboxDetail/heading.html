@@ -7,10 +7,7 @@
     </div>
     <div class="pull-right text-right">
       {# <button class="btn btn-sm mr-10" title="" type="button"><i class="zmdi zmdi-print"></i> </button> #}
-      <form method="post" action="/mark-as/{{id}}" style="display: inline-block;">
-        <input type="hidden" name="deleted" value="{{ deleted }}" />
-        <button type="submit" class="btn btn-sm mr-10" title=""><i class="zmdi zmdi-delete"></i></button>
-      </form>
+      <button id="deleteSingleMessage" data-id="{{id}}" class="btn btn-sm mr-10" title=""><i class="zmdi zmdi-delete"></i></button>
       <div class="inline-block dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i
             class="zmdi zmdi-more"></i></a>
