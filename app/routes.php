@@ -40,6 +40,7 @@ $collector->group(['before' => 'auth'], function($router){
     
     $router->get('/', 'InboxController::getIndex');
     $router->get('/{id:\d+}', 'InboxController::getDetail');
+    $router->post('/get-message-info', 'InboxController::getMessageInfo');
     
     $router->post('/delete/{id:\d+}', 'InboxController::deleteOne');
     $router->post('/mark-as/{id:\d+}', 'InboxController::markAs');

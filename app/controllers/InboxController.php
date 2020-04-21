@@ -134,6 +134,19 @@ class InboxController extends \Core\Controller
         return $this->redirect('/' . $id . $queryString);
     }
 
+    public function getMessageInfo(){
+        $strSQL="SELECT token FROM emails WHERE id='{$_POST['id']}'";
+        $rowEmail2 = $this->db->query($strSQL)->single();
+
+
+
+        $strSQL="SELECT * FROM emails WHERE token='{$rowEmail2['token']}'";
+        $rowEmail = $this->db->query($strSQL)->single();
+
+        echo json_encode([ 'email' => $rowEmail, 'token' => $rowEmail2]);
+        exit();
+    }
+
     public function sendMessage() {
 
         //Verifica los campos requeridos

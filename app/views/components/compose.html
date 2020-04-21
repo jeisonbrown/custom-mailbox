@@ -1,6 +1,6 @@
 <!-- components/compose -->
 <div class="mt-20 mb-20 ml-15 mr-15">
-  <a href="#composeModal" data-toggle="modal" title="Compose" class="btn btn-warning btn-block">
+  <a id="addNewMessage" data-toggle="modal" title="Compose" class="btn btn-warning btn-block">
     Nuevo mensaje
   </a>
   <!-- Modal -->
@@ -10,44 +10,44 @@
       <div class="modal-content">
         <div class="modal-header">
           <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-          <h4 class="modal-title">Nuevo mensaje</h4>
+          <h4 class="modal-title" id="titleMessage">Nuevo mensaje</h4>
         </div>
         <div class="modal-body">
           <form role="form" class="form-horizontal" action="/send" method="POST"  enctype="multipart/form-data">
             <div class="form-group {% if errors is defined and errors.nameFrom %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Nombre</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="nameFrom" class="form-control" value="{% if errors is defined %}{{ post.nameFrom }}{% endif %}">
+                <input type="text" placeholder="" id="nameFrom" name="nameFrom" class="form-control" value="{% if errors is defined %}{{ post.nameFrom }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.emailFrom %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Correo</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="emailFrom" class="form-control" value="{% if errors is defined %}{{ post.emailFrom }}{% endif %}">
+                <input type="text" placeholder="" id="emailFrom"  name="emailFrom" class="form-control" value="{% if errors is defined %}{{ post.emailFrom }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.to %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Para</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="to" class="form-control" value="{% if errors is defined %}{{ post.to }}{% endif %}">
+                <input type="text" placeholder="" id="to" name="to" class="form-control" value="{% if errors is defined %}{{ post.to }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.cc %} has-error {% endif %} ">
               <label class="col-lg-2 control-label">CC</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="cc" class="form-control" value="{% if errors is defined %}{{ post.cc }}{% endif %}">
+                <input type="text" placeholder="" id="cc" name="cc" class="form-control" value="{% if errors is defined %}{{ post.cc }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.reply %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Responder a</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="reply" class="form-control" value="{% if errors is defined %}{{ post.reply }}{% endif %}">
+                <input type="text" placeholder="" id="reply" name="reply" class="form-control" value="{% if errors is defined %}{{ post.reply }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.subject %} has-error {% endif %}">
               <label class="col-lg-2 control-label">Asunto</label>
               <div class="col-lg-10">
-                <input type="text" placeholder="" name="subject" class="form-control" value="{% if errors is defined %}{{ post.subject }}{% endif %}">
+                <input type="text" placeholder="" id="subject" name="subject" class="form-control" value="{% if errors is defined %}{{ post.subject }}{% endif %}">
               </div>
             </div>
             <div class="form-group {% if errors is defined and errors.message %} has-error {% endif %}">

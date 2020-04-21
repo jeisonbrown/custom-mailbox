@@ -15,14 +15,14 @@
         <span class="inbox-detail-time-1 font-12">{{ created_at }}</span>
         <span class="inbox-detail-time-2 font-12 inline-block">({{ created_at_human}})</span>
       </div>
-      {# <div class="inline-block dropdown">
+      <div class="inline-block dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="zmdi   zmdi-more-vert"></i></a>
         <ul class="dropdown-menu bullet dropdown-menu-right" role="menu">
-          <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-reply" aria-hidden="true"></i>Responder</a></li>
-          <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-share" aria-hidden="true"></i>Reenviar</a></li>
-          <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-trash" aria-hidden="true"></i>Eliminar</a></li>
+          <li role="presentation"><a href="javascript:void(0)" role="menuitem" id="replySingleMessage" data-id="{{id}}"><i class="icon wb-reply" aria-hidden="true"></i>Responder</a></li>
+          <li role="presentation"><a href="javascript:void(0)" role="menuitem" id="resendSingleMessage" data-id="{{id}}"><i class="icon wb-share" aria-hidden="true"></i>Reenviar</a></li>
+          {# <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-trash" aria-hidden="true"></i>Eliminar</a></li> #}
         </ul>
-      </div> #}
+      </div>
     </div>
     <div class="clearfix"></div>
   </div>

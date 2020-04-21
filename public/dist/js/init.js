@@ -444,7 +444,56 @@ $(document).ready(function(){
 				}
 			})
 		}
-})
+	})
+
+	$('#addNewMessage').on('click', function(){
+		$('#nameFrom').val('');
+		$('#emailFrom').val('');
+		$('#to').val('');
+		$('#cc').val('');
+		$('#reply').val('');
+		$('#subject').val('');
+		$('#titleMessage').text('Nuevo mensaje')
+		$(".textarea_editor").data("wysihtml5").editor.setValue('')
+		$('#composeModal').modal('show');
+	})
+
+	$('#replySingleMessage, #resendSingleMessage').on('click', function() {
+
+		var id = $(this).data('id')
+		var type = $(this).attr('id') === 'replySingleMessage' ? 'Responder' : 'Reenviar'
+		var prefix = type === 'Responder' ? 'Re: ' : 'Fwd: '
+		if(id){
+			
+			var html = $('#messageSingleMessage').html();
+			$(".textarea_editor").data("wysihtml5").editor.setValue(html)
+			
+			$.ajax({
+				type: "POST",
+				url: window.location.origin + '/get-message-info',
+				data: { id },
+				dataType: 'JSON',
+				success: function({ email }){
+					if(email){
+						$('#nameFrom').val(email.name);
+						$('#emailFrom').val(email.from);
+						$('#to').val(email.to);
+						$('#cc').val(email.cc);
+						$('#reply').val(email.reply);
+						$('#subject').val(prefix + email.subject);
+						$('#titleMessage').text(type)
+						console.log(email)
+					}
+
+					$('#composeModal').modal('show');
+				},
+				error: function(e){
+					console.log('error', e)
+				}
+			})
+
+		}
+	})
 
 	
 	

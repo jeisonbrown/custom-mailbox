@@ -102,7 +102,7 @@ trait InboxTrait
                     continue;
                 }
                 
-                $strSQL="SELECT id, user_id FROM emails WHERE token='{$token[0]}' LIMIT 1";
+                $strSQL="SELECT id, user_id, token FROM emails WHERE token='{$token[0]}' LIMIT 1";
                 $rowEmail = $this->db->query($strSQL)->single();
 
                 if(!$rowEmail){
@@ -115,6 +115,7 @@ trait InboxTrait
                 $data['message'] = $message;
                 $data['user_id'] = $rowEmail['user_id'];
                 $data['parent_id'] = $rowEmail['id'];
+                $data['token'] = $rowEmail['token'];
                 $data['subject'] = $headers->subject;
                 
                 $fromList = $this->arrayHeaderToCommaSeparated($headers, 'from');
