@@ -65,7 +65,7 @@ class AuthController extends \Core\Controller
                 ]);
 
                 $mailer = new Mailer();
-                $mailer->setFrom(getenv('MAILER_USERNAME'));
+                $mailer->setFrom(getenv('SMTP_USERNAME'));
                 $mailer->addAddress($email);
                 $mailer->setSubject('Cambio de clave');
                 $mailer->setBody($body);

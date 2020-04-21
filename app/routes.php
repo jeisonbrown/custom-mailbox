@@ -46,7 +46,5 @@ $collector->group(['before' => 'no-auth'], function($router){
 
 $collector->get('/reset-password/{token}?', 'AuthController::getResetPassword');
 $collector->post('/reset-password/{token}?', 'AuthController::postResetPassword');
-
-
-
+$collector->get('/email-tracker/{token}', 'InboxController::getTracker');
 

@@ -31,6 +31,7 @@ $strSQL.="DROP TABLE IF EXISTS emails;";
 $strSQL.="CREATE TABLE `emails` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `subject` TEXT COLLATE utf8_unicode_ci NOT NULL,
   `message` TEXT COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -45,6 +46,7 @@ $strSQL.="CREATE TABLE `emails` (
   `sended` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,
   `important` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,
   `draft` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,
+  `token` varchar(40) COLLATE utf8_unicode_ci NULL DEFAULT '',
   `attachment` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,
   `deleted` tinyint(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,

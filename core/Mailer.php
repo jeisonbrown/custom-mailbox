@@ -17,6 +17,7 @@ class Mailer
    private $port; // 587;
    private $secure ;
    private $debug;
+   private $hash;
 
    private $mail;
    private $emailFrom;
@@ -25,11 +26,11 @@ class Mailer
    private $bccAddresses = [];
 
    private function init(){
-      $this->host     = getenv('MAILER_HOST', ''); // sets GMAIL as the SMTP server
-      $this->username = getenv('MAILER_USERNAME', ''); // GMAIL username
-      $this->password = getenv('MAILER_PASSWORD', '');
-      $this->port     = getenv('MAILER_PORT', ''); // 587;
-      $this->secure   = getenv('MAILER_ENCRYPTION', 'tls');
+      $this->host     = getenv('SMTP_HOST', ''); // sets GMAIL as the SMTP server
+      $this->username = getenv('SMTP_USERNAME', ''); // GMAIL username
+      $this->password = getenv('SMTP_PASSWORD', '');
+      $this->port     = getenv('SMTP_PORT', ''); // 587;
+      $this->secure   = getenv('SMTP_ENCRYPTION', 'tls');
       $this->debug    = boolval(getenv('DEBUG', false));
    }
 
@@ -80,6 +81,10 @@ class Mailer
       $this->mail->addReplyTo($address, $name);
    }
 
+   public function addCustomHeader($name, $value) {
+      $this->mail->addCustomHeader($name, $value);
+   }
+
    public function addAttachment($path, $name = '', $encoding = PHPMailer::ENCODING_BASE64, $type = '', $disposition = 'attachment') {
       $this->mail->addAttachment($path, $name, $encoding, $type, $disposition);
    }
@@ -96,8 +101,17 @@ class Mailer
       $this->mail->AltBody = $altBody;
    }
 
+   private function setHash(){
+      $hash=sha1(strval(time()));
+      $traceUserId = "<span id='[[HASH:--{$hash}--]]' style='color: white !important'></span>";
+      $this->mail->Body .= $traceUserId;
+      $this->hash = $hash;
+   }
+
    public function send() {
+
       try {
+         $this->setHash();
          return $this->mail->send();
       } catch (Exception $e) {
          if($this->debug){
@@ -132,14 +146,15 @@ class Mailer
    public function save($folder = 'uploads/attachments'){
 
       $data['user_id'] = $_SESSION['USER_ID'];
+      $data['token'] = $this->hash;
       $data['subject'] = $this->mail->Subject;
-      $data['message'] = $this->mail->Body;
+      $data['message'] = addslashes($this->mail->Body);
       $data['name'] = $this->nameFrom;
       $data['from'] = $this->emailFrom;
       $data['to'] = implode(',', array_keys($this->mail->getAllRecipientAddresses()));
       $data['cc'] = implode(',', $this->ccAddresses);
       $data['bcc'] = implode(',', $this->bccAddresses);
-      $data['reply'] = implode(',', array_keys($this->mail->getReplyToAddresses()));
+      $data['reply'] = $_POST['reply'];
       $data['sended'] = 1;
       $data['viewed'] = 1;
       $data['attachment'] = $this->mail->attachmentExists() ? 1 : 0;

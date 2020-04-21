@@ -13,17 +13,18 @@ class InboxController extends \Core\Controller
     use \Controller\Traits\InboxDetailTrait;
     use \Controller\Traits\NotificationTrait;
 
-    public function downloadAttachment($email_id, $file){
+    public function downloadAttachment($email_id, $file) {
 
-        $fileRoute = $_SERVER['DOCUMENT_ROOT']."/../uploads/attachments/{$file}";
-        if(file_exists($fileRoute)){
-            $filetype=filetype($fileRoute);
-            $filename=basename($fileRoute);
-            header ("Content-Type: ".$filetype);
-            header ("Content-Length: ".filesize($fileRoute));
-            header ("Content-Disposition: attachment; filename=".$filename);
+        $fileRoute = $_SERVER['DOCUMENT_ROOT'] . "/../uploads/attachments/{$file}";
+        if (file_exists($fileRoute)) {
+            $filetype = filetype($fileRoute);
+            $filename = basename($fileRoute);
+            header("Content-Type: " . $filetype);
+            header("Content-Length: " . filesize($fileRoute));
+            header("Content-Disposition: attachment; filename=" . $filename);
             readfile($fileRoute);
-        } else {
+        }
+        else {
             header("Location: /{$email_id}");
         }
     }
@@ -56,22 +57,22 @@ class InboxController extends \Core\Controller
         ]);
     }
 
-    private function getEmailData($id){
-        $strSQL="SELECT * FROM emails WHERE id = '{$id}' LIMIT 1";
+    private function getEmailData($id) {
+        $strSQL = "SELECT * FROM emails WHERE id = '{$id}' LIMIT 1";
         $rowEmail = $this->db->query($strSQL)->single();
         $rowEmail['created_at_human'] = Date::format($rowEmail['created_at'], 'human');
         $rowEmail['created_at'] = Date::format($rowEmail['created_at']);
         $rowEmail['attachment'] = intval($rowEmail['attachment']);
 
-        if($rowEmail['attachment']){
-            $strSQL="SELECT * FROM email_attachments WHERE email_id='{$id}'";
+        if ($rowEmail['attachment']) {
+            $strSQL = "SELECT * FROM email_attachments WHERE email_id='{$id}'";
             $rowEmail['attachments'] = $this->db->query($strSQL)->resultset();
         }
         return $rowEmail;
     }
 
     public function getDetail($id = null) {
-        if(empty($_GET['not-viewed'])){
+        if (empty($_GET['not-viewed'])) {
             $this->markAsViewed($id);
         }
         $this->setNotViewed();
@@ -81,18 +82,18 @@ class InboxController extends \Core\Controller
         return $this->render('inboxDetail.index', $response);
     }
 
-    public function markAs($id){
+    public function markAs($id) {
         $update = [];
-        $queryString=$_POST['viewed'] == 1 ? '/?not-viewed=1' : '';
-        foreach($_POST as $key => $value){
+        $queryString = $_POST['viewed'] == 1 ? '/?not-viewed=1' : '';
+        foreach ($_POST as $key => $value) {
             $newValue = $value == 1 ? 0 : 1;
             $update[] = "{$key}='$newValue'";
         }
 
-        $strSQL="UPDATE emails SET " . implode(',', $update) . " WHERE id='{$id}' AND user_id='{$_SESSION['USER_ID']}' LIMIT 1";
+        $strSQL = "UPDATE emails SET " . implode(',', $update) . " WHERE id='{$id}' AND user_id='{$_SESSION['USER_ID']}' LIMIT 1";
         $this->db->query($strSQL)->execute();
 
-        if(!empty($_POST['deleted'])){
+        if (!empty($_POST['deleted'])) {
             return $this->redirect('/');
         }
 
@@ -122,6 +123,7 @@ class InboxController extends \Core\Controller
             ]);
         }
 
+        $mailer->addReplyTo(getenv('IMAP_USERNAME'), getenv('IMAP_ALIAS'));
         $mailer->setFrom($_POST['emailFrom'], $_POST['nameFrom']);
         $mailer->setSubject($_POST['subject']);
         $mailer->setBody($_POST['message']);

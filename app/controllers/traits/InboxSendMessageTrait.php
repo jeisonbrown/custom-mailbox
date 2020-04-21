@@ -42,11 +42,11 @@ trait InboxSendMessageTrait
                         case 'bcc':
                             $mailer->addBCC($email);
                             break;
-                        case 'reply':
-                            if (empty($emailValues[$field])) {
-                                $mailer->addReplyTo($email, $_POST['nameFrom']);
-                            }
-                            break;
+                        // case 'reply':
+                        //     if (empty($emailValues[$field])) {
+                        //         $mailer->addReplyTo($email, $_POST['nameFrom']);
+                        //     }
+                        //     break;
                         default:
                             break;
                     }

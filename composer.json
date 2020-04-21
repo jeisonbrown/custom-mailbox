@@ -1,6 +1,7 @@
 {
     "require": {
         "php": "^7.2.0",
+        "ext-imap": "*",
         "twig/twig": "^3.0",
         "phroute/phroute": "^2.1",
         "vlucas/phpdotenv": "^4.1",
