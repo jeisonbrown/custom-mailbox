@@ -47,7 +47,7 @@ class AuthController extends \Core\Controller
     public function postForgotPassword() {
         $email = trim($_POST['email']);
         if ($email) {
-            $strSQL = "SELECT id, name FROM users WHERE email='{$email}' and active and not delete LIMIT 1";
+            $strSQL = "SELECT id, name FROM users WHERE email='{$email}' and active and not deleted LIMIT 1";
             $rowUser = $this->db->query($strSQL)->single();
             if ($rowUser) {
                 $token = sha1(time());
