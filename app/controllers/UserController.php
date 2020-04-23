@@ -98,7 +98,7 @@ class UserController extends \Core\Controller
             $this->db->query($strSQL)->execute();
             $user_id = $this->db->lastInsertId();
 
-            $strSQL="INSERT INTO emails (id, user_id, subject, message, name, `from`, `to`, inbox, important, attachment, created_at) values (1, '{$user_id}', 'Bienvenido!', 'Bienvenido al sistema de Mailbox', 'Mailbox', 'inbox@mailbox.com', '{$_POST['email']}', 1, 1, 1, '{$date}');";
+            $strSQL="INSERT INTO emails (id, user_id, subject, message, name, `from`, `to`, inbox, important, attachment, created_at) values (1, '{$user_id}', 'Bienvenido!', 'Bienvenido al sistema', 'Email', 'inbox@inbox.com', '{$_POST['email']}', 1, 1, 1, '{$date}');";
             $this->db->query($strSQL)->execute();
             $email_id = $this->db->lastInsertId();
             

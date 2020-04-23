@@ -13,8 +13,8 @@ $strSQL.="INSERT INTO roles (id, name) VALUES (3, 'User');";
 $strSQL.="INSERT INTO users (id, name, email, password, role_id) values (1, 'Santiago Ruiz', 'sanruiz1003@gmail.com', '{$password}', 1);";
 $strSQL.="INSERT INTO users (id, name, email, password, role_id) values (2, 'Jeison Jose Brown Mille', 'jeisonbrownmiller@gmail.com', '{$password}', 1);";
 
-$strSQL.="INSERT INTO emails (id, user_id, subject, message, name, `from`, `to`, inbox, important, attachment, created_at) values (1, 1, 'Bienvenido!', 'Bienvenido al sistema de Mailbox', 'Mailbox', 'inbox@mailbox.com', 'sanruiz1003@gmail.com', 1, 1, 1, '{$date}');";
-$strSQL.="INSERT INTO emails (id, user_id, subject, message, name, `from`, `to`, inbox, important, attachment, created_at) values (2, 2, 'Bienvenida', 'Bienvenido al sistema de Mailbox', 'Mailbox', 'inbox@mailbox.com', 'jeisonbrownmiller@gmail.com', 1, 1, 1, '{$date}');";
+$strSQL.="INSERT INTO emails (id, user_id, subject, message, name, `from`, `to`, inbox, important, attachment, created_at) values (1, 1, 'Bienvenido!', 'Bienvenido al sistema', 'Email', 'inbox@inbox.com', 'sanruiz1003@gmail.com', 1, 1, 1, '{$date}');";
+$strSQL.="INSERT INTO emails (id, user_id, subject, message, name, `from`, `to`, inbox, important, attachment, created_at) values (2, 2, 'Bienvenida', 'Bienvenido al sistema', 'Email', 'inbox@inbox.com', 'jeisonbrownmiller@gmail.com', 1, 1, 1, '{$date}');";
 
 $strSQL.="INSERT INTO email_attachments (id, email_id, name, save_name) values (1, 1, 'mailbox.txt', 'mailbox.txt');";
 $strSQL.="INSERT INTO email_attachments (id, email_id, name, save_name) values (2, 2, 'mailbox.txt', 'mailbox.txt');";
